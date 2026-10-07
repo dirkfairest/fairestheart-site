@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Help · Fairest Heart</title>
+<meta name="description" content="What you need for Fairest Heart, and the questions we get.">
+<link rel="icon" href="icon.png"><link rel="canonical" href="https://fairestheart.com/help.html">
+<meta name="theme-color" content="#0b0e14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<!-- ============ title bar ============ -->
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="">FAIREST HEART</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav" id="nav" aria-label="Site">
+      <a href="index.html">Home</a>
+      <a href="plans.html">Plans</a>
+      <a href="help.html" aria-current="page">Help</a>
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="cta" href="plans.html">Get it on Google Play</a>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap"><div class="doc">
+    <div class="doc-head"><span class="eyebrow">Help</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What you need, and the questions we get.</h1>
+      <p class="dim">The app's own Help page says the same in more detail. For anything else, <a href="contact.html">write to us</a>.</p></div>
+
+    <h2>What you need</h2>
+    <div class="tbl"><table>
+      <tr><th>Strap</th><td>A Polar H10 chest strap, any generation that streams ECG. Wrist devices, optical sensors and other straps do not work with this app. <a href="https://amzn.to/4hIfq8T" target="_blank" rel="noopener sponsored">See on Amazon</a><br><span class="disclosure">As an Amazon Associate I earn from qualifying purchases.</span></td></tr>
+      <tr><th>Phone</th><td>Android 8.0 or newer with Bluetooth Low Energy. The app is not available for iPhone.</td></tr>
+      <tr><th>Battery</th><td>The strap takes a CR2025 coin cell. The app tells you when it drops under 20 %. <a href="https://amzn.to/4rQvqup" target="_blank" rel="noopener sponsored">See on Amazon</a></td></tr>
+      <tr><th>Internet</th><td>None. The app has no internet permission. Plans are checked through Google Play on your phone.</td></tr>
+    </table></div>
+
+    <h2>Questions</h2>
+    <details open><summary>Will it tell me whether my heart is fine?</summary><p>No. Fairest Heart records, displays and exports what the strap provides. It does not analyse your heart rhythm and makes no statement about it. If you are worried about your heart, see a clinician and bring the recording.</p>
+<p>The reason is the law, not the technology. An app that says anything about your rhythm is a medical device. In the United States that means FDA clearance first: a formal study against expert-labelled recordings, a quality system, and a budget far beyond a one-person project. The analysis the maker built for his own heart exists, and it stays unpublished until it can go through that process. If you or your organisation would like to sponsor that path, <a href="contact.html">write to us</a>. We are open to it.</p></details>
+    <details><summary>How does a night stay recorded with the phone locked?</summary><p>The recording runs as a foreground service with a visible notification. On first run the app asks Android to leave it out of battery saving. Some phone brands need one more setting; the onboarding shows the step for your brand.</p></details>
+    <details><summary>Where are my recordings?</summary><p>In the app's own storage, and as a copy in the phone's Download/PulseTrace folder, as EDF+ and CSV. The copies survive if you remove the app. Delete them with a file manager when you no longer want them.</p></details>
+    <details><summary>What is EDF+ and who can open it?</summary><p>EDF+ is the open file format most ECG and sleep software reads. A clinician's software, free viewers such as EDFbrowser, and research tools all open it. The app also shares CSV for spreadsheets and a PDF for people.</p></details>
+    <details><summary>Why does the strap signal say Poor?</summary><p>Usually a dry strap or a loose fit. Wet the electrodes, tighten the band one notch, and give it a minute. The signal quality card on the Overview shows how much of a night was readable.</p></details>
+    <details><summary>Can I use it for training?</summary><p>Yes. Heart rate, time in training zones and an effort load are there, with the usual formulas (maximum heart rate from your age, Karvonen zones). They are fit to you, not measured for you.</p></details>
+    <details><summary>Does it sync with Health Connect, Google Fit or my watch?</summary><p>Not in this version. A later version may add an optional Health Connect sync, off by default. Nothing syncs today.</p></details>
+    <details><summary>How do I cancel a plan?</summary><p>In Google Play: Payments &amp; subscriptions → Subscriptions → Fairest Heart. The plan runs to the end of the paid period. The app keeps every recording for another 30 days.</p></details>
+
+    <h2>Something broke</h2>
+    <p>Open Help in the app and use <strong>Share → For support</strong>. It hands the recording, the heart-rate table and the event log to your mail app in one go, addressed to us. Say what you expected and what happened. We answer by e-mail.</p>
+  </div></div>
+</main>
+<!-- ============ footer ============ -->
+<footer>
+  <div class="wrap">
+    <div><div class="brand" style="margin-bottom:12px"><img src="icon.png" alt="">FAIREST HEART</div>
+      <p>Your Polar H10 ECG, all night. Stays on your phone.</p>
+      <p style="margin-top:10px" class="small">Not a medical device. If you are worried about your heart, see a clinician.</p></div>
+    <div><h4>App</h4><ul><li><a href="index.html">Home</a></li><li><a href="plans.html">Plans</a></li><li><a href="help.html">Help</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="help.html">Third-party licences</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="contact.html">help@fairestheart.com</a></li><li>Fairest Media LLC</li><li>United States</li></ul></div>
+  </div>
+  <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
+</footer>
+
+<script src="site.js"></script>
+</body></html>

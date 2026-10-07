@@ -1,33 +1,100 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fairest Heart privacy policy</title>
-<style>body{font:16px/1.5 -apple-system,Roboto,Helvetica,Arial,sans-serif;max-width:760px;margin:40px auto;padding:0 16px;color:#1b1f27;background:#fff}
-table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #d6dae2;padding:6px 8px;vertical-align:top;text-align:left}
-blockquote{border-left:4px solid #8dd;margin:0;padding:4px 12px;color:#333;background:#f3fbf9}code{background:#f1f3f6;padding:1px 4px;border-radius:3px}
-@media(prefers-color-scheme:dark){body{background:#0b0e14;color:#e6e9ef}td,th{border-color:#2a3040}blockquote{background:#10201d;color:#dfe}code{background:#1a2030}}</style></head><body>
-<h1>Privacy policy — Fairest Heart</h1>
-<p><strong>Effective date:</strong> 2026-10-07 · <strong>Applies to:</strong> the Android app &quot;Fairest Heart&quot; published by Fairest Media LLC. <strong>Contact:</strong> help@fairestmedia.com</p>
-<blockquote>Short version: the app has no internet access. Everything it records stays on your phone until you choose to share it. We receive nothing from the app.</blockquote>
-<h2>1. What the app does</h2>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy policy · Fairest Heart</title>
+<meta name="description" content="The app has no internet access. Everything it records stays on your phone. We receive nothing.">
+<link rel="icon" href="icon.png"><link rel="canonical" href="https://fairestheart.com/privacy.html">
+<meta name="theme-color" content="#0b0e14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<!-- ============ title bar ============ -->
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="">FAIREST HEART</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav" id="nav" aria-label="Site">
+      <a href="index.html">Home</a>
+      <a href="plans.html">Plans</a>
+      <a href="help.html">Help</a>
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html" aria-current="page">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="cta" href="plans.html">Get it on Google Play</a>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap"><div class="doc">
+    <div class="doc-head"><span class="eyebrow">Privacy policy</span><h1 style="font-size:clamp(30px,4.5vw,44px)">Everything stays on your phone. We receive nothing.</h1></div>
+    <nav class="toc" aria-label="Sections"><a href="#1-what-the-app-does">1 What the app does</a><a href="#2-data-the-app-stores-on-your-phone">2 Data the app stores on your phone</a><a href="#3-data-that-leaves-your-phone">3 Data that leaves your phone</a><a href="#4-data-we-collect">4 Data we collect</a><a href="#5-health-connect">5 Health Connect</a><a href="#6-permissions-the-app-asks-for-and-why">6 Permissions the app asks for, and why</a><a href="#7-deleting-your-data">7 Deleting your data</a><a href="#8-children">8 Children</a><a href="#9-changes">9 Changes</a><a href="#10-who-we-are">10 Who we are</a></nav>
+<p><strong>Effective date:</strong> 2026-10-07 · <strong>Applies to:</strong> the Android app "Fairest Heart" published by Fairest Media LLC. <strong>Contact:</strong> help@fairestheart.com</p>
+<div class="note">Short version: the app has no internet access. Everything it records stays on your phone until you choose to share it. We receive nothing from the app.</div>
+<h2 id="1-what-the-app-does">1. What the app does</h2>
 <p>Fairest Heart records, displays and exports the data your Polar H10 chest strap provides over Bluetooth: the single-lead ECG trace, heart rate, R-R intervals, heart-rate variability (HRV), strap contact and motion. It is not a medical device and does not analyse your heart rhythm.</p>
-<h2>2. Data the app stores on your phone</h2>
-<p>All of the following is stored only on your phone: in the app&#x27;s private storage, and, for the recording files, also as a copy in the phone&#x27;s public <strong>Download/PulseTrace</strong> folder (see section 3).</p>
-<table><tr><th>Data</th><th>Why it is stored</th><th>Where</th></tr><tr><td>ECG samples, R-R intervals, heart rate, HRV figures, accelerometer samples, strap battery and contact</td><td>They are the recording</td><td>App-private storage (EDF+ and CSV files)</td></tr><tr><td>Marks and diary notes you add (time, label, free text)</td><td>You asked the app to remember them</td><td>App-private storage</td></tr><tr><td>Profile fields you may enter: name, date of birth, sex, record code</td><td>Written into the header of every EDF+ recording file and into the PDF so a shared recording says whose it is; date of birth and sex set your estimated maximum heart rate for training zones</td><td>App settings on the phone, and inside each recording file</td></tr><tr><td>Settings: chosen strap, alert thresholds, appearance, which panels are shown</td><td>To remember your choices</td><td>App settings on the phone</td></tr><tr><td>Your Google Play plan (Free, Plus, Pro) and the time it was last checked</td><td>To know which features are unlocked while Google Play is unreachable</td><td>App settings on the phone</td></tr></table>
+<h2 id="2-data-the-app-stores-on-your-phone">2. Data the app stores on your phone</h2>
+<p>All of the following is stored only on your phone: in the app's private storage, and, for the recording files, also as a copy in the phone's public <strong>Download/PulseTrace</strong> folder (see section 3).</p>
+<div class="tbl"><table>
+<tr><th>Data</th><th>Why it is stored</th><th>Where</th></tr>
+<tr><td>ECG samples, R-R intervals, heart rate, HRV figures, accelerometer samples, strap battery and contact</td><td>They are the recording</td><td>App-private storage (EDF+ and CSV files)</td></tr>
+<tr><td>Marks and diary notes you add (time, label, free text)</td><td>You asked the app to remember them</td><td>App-private storage</td></tr>
+<tr><td>Profile fields you may enter: name, date of birth, sex, record code</td><td>Written into the header of every EDF+ recording file and into the PDF so a shared recording says whose it is; date of birth and sex set your estimated maximum heart rate for training zones</td><td>App settings on the phone, and inside each recording file</td></tr>
+<tr><td>Settings: chosen strap, alert thresholds, appearance, which panels are shown</td><td>To remember your choices</td><td>App settings on the phone</td></tr>
+<tr><td>Your Google Play plan (Free, Plus, Pro) and the time it was last checked</td><td>To know which features are unlocked while Google Play is unreachable</td><td>App settings on the phone</td></tr>
+</table></div>
 <p>You can leave every profile field empty. The app works the same.</p>
-<h2>3. Data that leaves your phone</h2>
+<h2 id="3-data-that-leaves-your-phone">3. Data that leaves your phone</h2>
 <p><strong>Nothing leaves your phone unless you send it.</strong> The release build of the app declares no internet permission; Android does not let it open a network connection at all.</p>
-<ul><li><strong>Sharing.</strong> When you tap Share, Android&#x27;s share sheet opens and you choose the app that receives the file (your e-mail app, a cloud drive, a message). From that moment the receiving app&#x27;s privacy policy applies, not ours.</li><li><strong>One-tap backup (Pro).</strong> The same share sheet, for every recording not yet handed over. The app records that it handed the files over; it does not upload anything itself.</li><li><strong>Copies in Downloads.</strong> The app automatically writes a copy of every finished recording (the EDF+ file, the heart-rate and R-R table, your marks and diary notes, and the dropout logs) to the phone&#x27;s public <strong>Download/PulseTrace</strong> folder, so other apps on your phone can open them and so a recording survives if the app is removed. These copies stay on your phone; any app you have given storage access can read them. The EDF+ copy carries the profile fields from section 2 in its header.</li><li><strong>Google Play purchases.</strong> Subscriptions and one-time Support purchases are handled by Google Play on your device. Google Play tells the app which plan is active. The app never sees your payment details. Google&#x27;s privacy policy applies to the purchase.</li><li><strong>Tester code.</strong> If you open the tester-code page and ask for a code, the app shows a request code derived from your phone&#x27;s Android ID. The code is only sent if you copy it into a message yourself. It lets us issue a code that works on your phone only; we keep the request code with your message and nothing else.</li></ul>
-<h2>4. Data we collect</h2>
+<ul>
+<li><strong>Sharing.</strong> When you tap Share, Android's share sheet opens and you choose the app that receives the file (your e-mail app, a cloud drive, a message). From that moment the receiving app's privacy policy applies, not ours.</li>
+<li><strong>One-tap backup (Pro).</strong> The same share sheet, for every recording not yet handed over. The app records that it handed the files over; it does not upload anything itself.</li>
+<li><strong>Copies in Downloads.</strong> The app automatically writes a copy of every finished recording (the EDF+ file, the heart-rate and R-R table, your marks and diary notes, and the dropout logs) to the phone's public <strong>Download/PulseTrace</strong> folder, so other apps on your phone can open them and so a recording survives if the app is removed. These copies stay on your phone; any app you have given storage access can read them. The EDF+ copy carries the profile fields from section 2 in its header.</li>
+<li><strong>Google Play purchases.</strong> Subscriptions and one-time Support purchases are handled by Google Play on your device. Google Play tells the app which plan is active. The app never sees your payment details. Google's privacy policy applies to the purchase.</li>
+<li><strong>Tester code.</strong> If you open the tester-code page and ask for a code, the app shows a request code derived from your phone's Android ID. The code is only sent if you copy it into a message yourself. It lets us issue a code that works on your phone only; we keep the request code with your message and nothing else.</li>
+</ul>
+<h2 id="4-data-we-collect">4. Data we collect</h2>
 <p>None. We run no server for this app, we have no analytics, no crash reporting, no advertising identifiers and no accounts. If you e-mail us for support, we keep your e-mail and what you wrote to answer it.</p>
-<h2>5. Health Connect</h2>
+<h2 id="5-health-connect">5. Health Connect</h2>
 <p>This version of the app does not use Health Connect and declares no Health Connect permissions. If a later version adds an optional sync to Health Connect, it will be off by default, ask for permission first, and this policy will be updated before that version is published.</p>
-<h2>6. Permissions the app asks for, and why</h2>
-<table><tr><th>Permission</th><th>Why</th></tr><tr><td>Bluetooth (scan, connect; on Android 11 and older also location, which Android required for Bluetooth scanning)</td><td>To find and talk to your Polar H10. Location is never read or stored.</td></tr><tr><td>Notifications</td><td>The ongoing &quot;connected to the strap&quot; notification and the &quot;recording stopped&quot; notice.</td></tr><tr><td>Run in the background / foreground service, keep the phone awake</td><td>So an overnight recording keeps going with the phone locked.</td></tr><tr><td>Ignore battery optimisation (asked only after Android has stopped a recording)</td><td>So Android does not end the recording to save power.</td></tr><tr><td>Start after reboot</td><td>Only to tell you a recording ended when the phone restarted. Nothing records by itself.</td></tr><tr><td>Vibrate</td><td>Heart-rate alert feedback during training.</td></tr></table>
-<h2>7. Deleting your data</h2>
-<ul><li>Delete a recording in the app, or every recording from the Recordings tab. This removes the app&#x27;s own copy. The copy in <strong>Download/PulseTrace</strong> stays until you delete it there with a file manager (we are changing this so that Delete removes both; until then the app tells you).</li><li>Clear the profile fields in Settings. Recordings already written keep the header they were written with.</li><li>Uninstalling the app removes its private storage. The copies in Download/PulseTrace and anything you shared elsewhere remain yours to delete there.</li><li>The app does not back up to Google&#x27;s cloud backup (Android Auto Backup is disabled for this app).</li></ul>
-<h2>8. Children</h2>
+<h2 id="6-permissions-the-app-asks-for-and-why">6. Permissions the app asks for, and why</h2>
+<div class="tbl"><table>
+<tr><th>Permission</th><th>Why</th></tr>
+<tr><td>Bluetooth (scan, connect; on Android 11 and older also location, which Android required for Bluetooth scanning)</td><td>To find and talk to your Polar H10. Location is never read or stored.</td></tr>
+<tr><td>Notifications</td><td>The ongoing "connected to the strap" notification and the "recording stopped" notice.</td></tr>
+<tr><td>Run in the background / foreground service, keep the phone awake</td><td>So an overnight recording keeps going with the phone locked.</td></tr>
+<tr><td>Ignore battery optimisation (asked only after Android has stopped a recording)</td><td>So Android does not end the recording to save power.</td></tr>
+<tr><td>Start after reboot</td><td>Only to tell you a recording ended when the phone restarted. Nothing records by itself.</td></tr>
+<tr><td>Vibrate</td><td>Heart-rate alert feedback during training.</td></tr>
+</table></div>
+<h2 id="7-deleting-your-data">7. Deleting your data</h2>
+<ul>
+<li>Delete a recording in the app, or every recording from the Recordings tab. This removes the app's own copy. The copy in <strong>Download/PulseTrace</strong> stays until you delete it there with a file manager (we are changing this so that Delete removes both; until then the app tells you).</li>
+<li>Clear the profile fields in Settings. Recordings already written keep the header they were written with.</li>
+<li>Uninstalling the app removes its private storage. The copies in Download/PulseTrace and anything you shared elsewhere remain yours to delete there.</li>
+<li>The app does not back up to Google's cloud backup (Android Auto Backup is disabled for this app).</li>
+</ul>
+<h2 id="8-children">8. Children</h2>
 <p>The app is for adults. It is not directed at children under 16 and we knowingly collect no data from anyone, of any age.</p>
-<h2>9. Changes</h2>
-<p>When this policy changes, the new version is published at the same address with a new effective date, and the app&#x27;s store listing links to it.</p>
-<h2>10. Who we are</h2>
-<p>Fairest Media LLC, publisher of Fairest Heart. Fairest Media LLC, United States (the address on record in Google Play Console). E-mail: help@fairestmedia.com</p>
+<h2 id="9-changes">9. Changes</h2>
+<p>When this policy changes, the new version is published at the same address with a new effective date, and the app's store listing links to it.</p>
+<h2 id="10-who-we-are">10. Who we are</h2>
+<p>Fairest Media LLC, publisher of Fairest Heart. Fairest Media LLC, United States (the address on record in Google Play Console). E-mail: help@fairestheart.com</p>
+  </div></div>
+</main>
+<!-- ============ footer ============ -->
+<footer>
+  <div class="wrap">
+    <div><div class="brand" style="margin-bottom:12px"><img src="icon.png" alt="">FAIREST HEART</div>
+      <p>Your Polar H10 ECG, all night. Stays on your phone.</p>
+      <p style="margin-top:10px" class="small">Not a medical device. If you are worried about your heart, see a clinician.</p></div>
+    <div><h4>App</h4><ul><li><a href="index.html">Home</a></li><li><a href="plans.html">Plans</a></li><li><a href="help.html">Help</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="help.html">Third-party licences</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="contact.html">help@fairestheart.com</a></li><li>Fairest Media LLC</li><li>United States</li></ul></div>
+  </div>
+  <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
+</footer>
+
+<script src="site.js"></script>
 </body></html>
