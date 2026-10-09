@@ -30,6 +30,15 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.100.23</span><span class="d">9 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>The hour that comes twice when the clocks go back (1 November) is unambiguous everywhere: times in that hour carry their zone ("01:30 EDT", then "01:30 EST"), the time pickers ask which of the two you mean, and strips named with an offset are placed by it.</li>
+<li>Sharing a session or a time range gives one combined report, like a day does, with the year on its title; full-disclosure pages cover the first 24 hours and the summary covers all of it.</li>
+<li>Sharing the EDF+ of a session no longer stops because one finished part has not been analysed: the app analyses it first, and anything it still cannot include is named in the file and in the message. A partial file never replaces a complete one. When the EDF+ cannot be given, the plain recording file is offered instead.</li>
+<li>Marks: a note goes to the mark you confirmed, not the newest one; a change the phone could not save says so and is not reported as done; a mark can be slid back into the earlier part of the same recording, and a mark pressed while stopped can be moved onto the beats either side of the stop.</li>
+<li>Beat shapes always show a drawing when one exists, from the recording itself or from the stored bank, and say in one line why not otherwise.</li>
+<li>After switching straps, the app reconnects to the strap you picked last, and lets go of the previous one first.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.100.22</span><span class="d">9 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>The ECG tab's tiles line up again: the title top left, the figure and its line underneath bottom left.</li>
