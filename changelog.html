@@ -30,6 +30,17 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.100.24</span><span class="d">9 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>A recording survives the phone removing the app from the recent apps list, which Android does after hours of idle time behind other apps: the recording service now owns the app's engine, so the strap link and the file keep going, and opening the app again shows the same recording in progress. The notification text follows the recording state.</li>
+<li>The store connection is reopened after such a relaunch, so a paid plan is not read as lapsed.</li>
+<li>A six-hour file change that fails (for example a full phone) no longer ends the recording silently: you get a notification, the app tries once to start again, and the gap is recorded as an outage.</li>
+<li>Stop and Exit during a file change are answered instead of swallowed.</li>
+<li>Beats that settle right at a file change land in the right file; two saves of one analysis file can no longer run into each other.</li>
+<li>Clinical: the recording still being written feeds the session and time-range cards as measured live so far, with the burden still waiting for it to close; the cards say which figures include it.</li>
+<li>Clinical: strips named with an offset sort and place by it; a strip's name sits on its first sample; a strip whose minutes after the mark are not recorded yet waits for them.</li>
+<li>The tester-code page can be reached with a screen reader; Easy mode's share sheet shows one Send button with other formats behind it; the top Share sheet can leave your marks out.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.100.23</span><span class="d">9 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>The hour that comes twice when the clocks go back (1 November) is unambiguous everywhere: times in that hour carry their zone ("01:30 EDT", then "01:30 EST"), the time pickers ask which of the two you mean, and strips named with an offset are placed by it.</li>
