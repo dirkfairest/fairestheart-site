@@ -30,6 +30,13 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.100.27</span><span class="d">10 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>The shared EDF+ file carries a signal quality channel beside the ECG and the movement channels: one value per second, 0–100 %, with stretches the app could not read marked as annotations, so an artifact can be matched to signal quality and movement in any EDF viewer.</li>
+<li>The Signal quality card shows a bar of minutes (good, poor, unreadable) over the movement band, on a recording's own page, on a session or time range, and on the Overview after a stop.</li>
+<li>Beat analysis 3.4.0: a strap still settling at the start of a file no longer marks normal beats as uncertain. After this update the app measures your recordings again once, newest first; until it reaches a recording, that recording's beat dots and beat-based cards may be empty for a moment (they are never wrong). Your labels are kept.</li>
+<li>Clinical, Mac tools: when the phone is plugged in the Mac copies new recordings, settles uncertain beats by its strict rules only, sends the labels back and says what is left; it leaves the phone alone while the phone is in use. An archive delivery no longer renumbers the shape groups already on the phone; a re-analysis keeps an episode's number.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.100.26</span><span class="d">10 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>A strap link lost and found again is no longer cut out of the file: the missing time is filled in, so beats, marks and times after a reconnect sit at the right clock time, and a loss longer than an hour starts a new file. A phone clock change never creates a gap. Old files with a long dropout are placed the same way on every screen and PDF.</li>
