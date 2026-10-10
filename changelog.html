@@ -30,6 +30,10 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.100.25</span><span class="d">10 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>After a phone restart or an app update, the app comes back by itself, reconnects to the strap and the recording carries on. A switch on the strap sheet ("Start recording again after a restart or update", on by default) turns this off; with it off you get a notification and start again yourself. After a restart this waits until you unlock the phone once. If the strap does not come back within two hours the app stops trying and says so.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.100.24</span><span class="d">9 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>A recording survives the phone removing the app from the recent apps list, which Android does after hours of idle time behind other apps: the recording service now owns the app's engine, so the strap link and the file keep going, and opening the app again shows the same recording in progress. The notification text follows the recording state.</li>
