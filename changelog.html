@@ -30,6 +30,17 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.100.26</span><span class="d">10 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>A strap link lost and found again is no longer cut out of the file: the missing time is filled in, so beats, marks and times after a reconnect sit at the right clock time, and a loss longer than an hour starts a new file. A phone clock change never creates a gap. Old files with a long dropout are placed the same way on every screen and PDF.</li>
+<li>Session and time-range pages: the Active, At rest and Asleep strip under the heart-rate chart, Peak effort, Best recovery and Effort load, from each recording's own movement data; beats on the edge of a range count on the right side; a cut recording's beat count matches its own page; shape rows show their coupling across recordings; a recording damaged by an old stop bug no longer inflates the burden.</li>
+<li>One combined report for a session or range now carries the ECG at a size that follows the length of the window, with a choice of row length on the Share sheet.</li>
+<li>Two recordings that partly overlap are counted once everywhere: cards, trend, baseline, summary, review queue; a shared part is marked as estimated.</li>
+<li>Clinical: the Poincaré plot counts and colours pairs of intervals that differ by more than a fifth; withheld when the signal is too noisy.</li>
+<li>Reads during a six-hour file change wait for it instead of showing a wrong "not analysed yet"; the Recordings tab and the time-range page group recordings the same way; day groups no longer start in 1970.</li>
+<li>Wellness preview (clinical build): the replayed introduction, shop links, Free space and the "Only in this build" notes now follow the preview; the preview gate is stricter.</li>
+<li>Mac tools: recordings are never double-counted, review rounds are copied by pull, withdrawals keep a ledger, a wrong sample rate is refused, and the two writers of 19 September are explained in docs.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.100.25</span><span class="d">10 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>After a phone restart or an app update, the app comes back by itself, reconnects to the strap and the recording carries on. A switch on the strap sheet ("Start recording again after a restart or update", on by default) turns this off; with it off you get a notification and start again yourself. After a restart this waits until you unlock the phone once. If the strap does not come back within two hours the app stops trying and says so.</li>
