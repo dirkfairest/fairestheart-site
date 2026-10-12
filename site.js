@@ -53,4 +53,8 @@
     if(n)draw(); if(!reduce)requestAnimationFrame(tick);
   }
   draw(); if(!reduce)requestAnimationFrame(tick);
+  // The recording clock counts like the app's: starts where the picture starts.
+  var clk=document.getElementById('rec-clock'); if(clk){ var t0=Date.now()-(2*60+24)*1000;
+    setInterval(function(){ var s=Math.floor((Date.now()-t0)/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+      clk.textContent=h+':'+(m<10?'0':'')+m+':'+(x<10?'0':'')+x; },1000); }
 })();
