@@ -223,5 +223,6 @@ details p{padding-bottom:16px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 /* the store button until the public release: looks like the button, does nothing */
-.cta.soon{cursor:default;opacity:.75}
+.cta.soon{cursor:default;opacity:.85}
 .cta.soon:hover{filter:none}
+.hero-why{margin:0}.hero-why a{color:var(--teal);font-weight:500}
