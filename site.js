@@ -43,9 +43,14 @@
     for(var i=0;i<N;i++){var v=buf[(head+i)%N]; var x=i/N*W, y=mid-v*sc; if(i===0)g.moveTo(x,y);else g.lineTo(x,y)}
     g.stroke(); g.shadowBlur=0;
   }
-  function tick(){
-    for(var k=0;k<2;k++){ buf[head]=beat(phase); head=(head+1)%N; phase+=1/fs; if(phase>rr-0.3){phase=-(rr-0.3); rr=0.78+Math.random()*0.1;} }
-    draw(); if(!reduce)requestAnimationFrame(tick);
+  // Real time: 130 samples per second of wall clock, whatever the display's
+  // refresh rate (a 120 Hz screen used to run the strip twice as fast).
+  var last=0, carry=0;
+  function tick(now){
+    if(!last)last=now; var dt=Math.min((now-last)/1000,0.25); last=now;
+    carry+=dt*fs; var n=Math.floor(carry); carry-=n;
+    for(var k=0;k<n;k++){ buf[head]=beat(phase); head=(head+1)%N; phase+=1/fs; if(phase>rr-0.3){phase=-(rr-0.3); rr=0.78+Math.random()*0.1;} }
+    if(n)draw(); if(!reduce)requestAnimationFrame(tick);
   }
   draw(); if(!reduce)requestAnimationFrame(tick);
 })();
