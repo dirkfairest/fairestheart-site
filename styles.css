@@ -221,3 +221,7 @@ details p{padding-bottom:16px}
 
 :focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* the store button until the public release: looks like the button, does nothing */
+.cta.soon{cursor:default;opacity:.75}
+.cta.soon:hover{filter:none}
