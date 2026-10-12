@@ -13,7 +13,9 @@
   // live ECG strip: one synthetic PQRST beat at ~72 bpm, drawn the way the app draws it
   var c=document.getElementById('ecg'); if(!c)return; var g=c.getContext('2d');
   var W=c.width,H=c.height, secs=5, fs=130, N=secs*fs, buf=new Float32Array(N), t=0, phase=0, rr=0.83;
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // The strip always moves: a live ECG is the point of the page (Dirk, 2026-10-12);
+  // the page's own scrolling still honours reduce-motion in styles.css.
+  var reduce=false;
   function beat(x){ // x in seconds since R, returns µV
     var v=0;
     v+= 120*Math.exp(-Math.pow((x+0.20)/0.025,2));      // P
