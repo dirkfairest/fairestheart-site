@@ -183,13 +183,13 @@
     return n;
   }
 
-  function fillChannel(parsed, index, out, r0, r1) {
+  function fillChannel(parsed, index, out, r0, r1, raw) {
     var sg = parsed.signals[index];
     var dv = new DataView(parsed.buffer);
     var spr = sg.samplesPerRecord;
     var span = sg.dmax - sg.dmin;
     var scale = span !== 0 ? (sg.pmax - sg.pmin) / span : 1;
-    var unit = unitFactorToMv(sg.dim);
+    var unit = raw ? 1 : unitFactorToMv(sg.dim);
     var k = scale * unit, c0 = sg.dmin, p0 = sg.pmin * unit;
     for (var r = r0; r < r1; r++) {
       var pos = parsed.dataStart + r * parsed.recBytes + sg.offsetInRecord * 2;
@@ -198,12 +198,21 @@
     }
   }
 
-  /* One channel as Float32Array, in millivolts when the unit is uV / mV / V. */
-  function extractChannel(parsed, index) {
+  /* One channel as Float32Array, in millivolts when the unit is uV / mV / V;
+     with raw set, in the file's own physical unit. */
+  function extractChannel(parsed, index, raw) {
     var out = new Float32Array(channelLength(parsed, index));
     if (parsed.recordOnsets) out.fill(NaN);
-    fillChannel(parsed, index, out, 0, parsed.records);
+    fillChannel(parsed, index, out, 0, parsed.records, raw);
     return out;
+  }
+  /* The RR channel the app writes (ms, sample-and-hold at the ECG rate), or -1. */
+  function pickRr(signals, ecgIndex) {
+    for (var i = 0; i < signals.length; i++) {
+      var s = signals[i];
+      if (!s.isAnnotations && i !== ecgIndex && /^RR$/i.test(s.label) && /^ms$/i.test(s.dim) && s.rate === signals[ecgIndex].rate) return i;
+    }
+    return -1;
   }
 
   /* Same, in slices so a big file never freezes the tab. */
@@ -238,20 +247,41 @@
     return { index: first, found: false };
   }
 
+  /* ================================================================ header fields */
+
+  /* EDF+ patient field: "code sex birthdate name", X for unknown, _ for spaces.
+     Returns {plus:true, code, sex ('M'|'F'|''), birthMs|null, name} or {plus:false, raw}. */
+  function parsePatient(s) {
+    var t = (s || '').trim().split(/\s+/);
+    var birthRe = /^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/;
+    if (t.length < 4 || !/^[MFX]$/i.test(t[1]) || !(t[2] === 'X' || birthRe.test(t[2]))) return { plus: false, raw: s || '' };
+    var un = function (x) { return x === 'X' ? '' : x.replace(/_/g, ' '); };
+    var bm = birthRe.exec(t[2]), birthMs = null;
+    if (bm && MONTHS[bm[2].toUpperCase()] !== undefined) birthMs = Date.UTC(+bm[3], MONTHS[bm[2].toUpperCase()], +bm[1]);
+    var sex = t[1].toUpperCase();
+    return { plus: true, code: un(t[0]), sex: sex === 'X' ? '' : sex, birthMs: birthMs, name: un(t.slice(3).join(' ')) };
+  }
+  function ageAt(birthMs, atMs) {
+    var b = new Date(birthMs), a = new Date(atMs);
+    var y = a.getUTCFullYear() - b.getUTCFullYear();
+    if (a.getUTCMonth() < b.getUTCMonth() || (a.getUTCMonth() === b.getUTCMonth() && a.getUTCDate() < b.getUTCDate())) y--;
+    return y;
+  }
+
   /* ================================================================ drawing */
 
   var DARK = { bg: '#0d1118', minor: 'rgba(154,163,178,0.10)', major: 'rgba(154,163,178,0.26)',
                trace: '#5fe3c8', mark: '#fbbf24', cal: '#b9a6ff', text: '#9aa3b2' };
   var PAPER = { bg: '#ffffff', minor: '#f7d3d6', major: '#eba2a9',
                 trace: '#111111', mark: '#a35a07', cal: '#1d4ed8', text: '#444444' };
-  var STRIP_MM = 50;      // canvas height: +-2.5 mV at 10 mm/mV
+  var ROW_MM = 40;        // one row: +-2 mV at 10 mm/mV; a multiple of 5 so the big squares line up across rows
+  var CAL_S = 0.2;        // calibration pulse: 1 mV for 0.2 s (5 mm at 25 mm/s)
   var MONO = 'ui-monospace, Menlo, Consolas, "Roboto Mono", monospace';
 
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
   var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   function fmtOffset(t, dec, forceHours) {
-    if (t < 0) return '-' + fmtOffset(-t, dec, forceHours);
     var h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60;
     var ss = dec ? (s < 10 ? '0' : '') + s.toFixed(dec) : pad2(Math.floor(s));
     return (h > 0 || forceHours) ? h + ':' + pad2(m) + ':' + ss : m + ':' + ss;
@@ -261,6 +291,10 @@
     var time = pad2(d.getUTCHours()) + ':' + pad2(d.getUTCMinutes()) + ':' + pad2(d.getUTCSeconds());
     if (!withDate) return time;
     return DAYS[d.getUTCDay()] + ' ' + pad2(d.getUTCDate()) + ' ' + MON[d.getUTCMonth()] + ' ' + d.getUTCFullYear() + ' ' + time;
+  }
+  function fmtDate(ms) {
+    var d = new Date(ms);
+    return pad2(d.getUTCDate()) + ' ' + MON[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
   }
   function fmtDuration(sec) {
     sec = Math.round(sec);
@@ -274,120 +308,178 @@
     return (n / 1048576).toFixed(1) + ' MB';
   }
 
-  /* Draw one strip. g: {W,H,ppm (device px per mm), startS, speed (mm/s), gain (mm/mV),
-     paper, ecg, rate, marks:[{t,text}], cal:[t,t], dpr, fs (font px), traceW,
-     lineMinor, lineMajor, totalS} */
+  /* Paper layout for a canvas of widthPx device pixels at ppm device px per mm.
+     A gutter at the left holds the calibration pulse; the trace area is a whole
+     number of big squares so the grid lines up from row to row. */
+  function stripLayout(widthPx, ppm, speed) {
+    var totalMm = Math.floor(widthPx / ppm);
+    var gutterMm = 2 + CAL_S * speed + 2;
+    var traceMm = Math.max(25, Math.floor((totalMm - gutterMm) / 5) * 5);
+    return { gutterMm: gutterMm, traceMm: traceMm, widthMm: gutterMm + traceMm, rowSec: traceMm / speed };
+  }
+
+  /* Heart rate over one row from the RR channel (ms, sample-and-hold at the ECG
+     rate, 0 before the second beat). Time-weighted mean; null when the row has
+     no beats for half its length or more. */
+  function rowHr(rr, rate, startS, rowSec) {
+    if (!rr) return null;
+    var i0 = Math.max(0, Math.round(startS * rate)), i1 = Math.min(rr.length, Math.round((startS + rowSec) * rate));
+    if (i1 <= i0) return null;
+    var sum = 0, n = 0;
+    for (var i = i0; i < i1; i++) { var v = rr[i]; if (v > 0) { sum += v; n++; } }
+    if (n === 0 || n < (i1 - i0) / 2) return null;
+    return Math.round(60000 / (sum / n));
+  }
+
+  /* Draw a stacked strip: g.rows rows of g.traceMm mm each, continuous in time.
+     g: {W,H,ppm (device px per mm), startS, speed (mm/s), gain (mm/mV), paper, rows,
+     gutterMm, traceMm, ecg, rate, rr, startMs, marks:[{t,text}], cal:[t,t], dpr,
+     fs (font px), traceW, lineMinor, lineMajor, totalS} */
   function drawStrip(ctx, g) {
-    var W = g.W, H = g.H, ppm = g.ppm, pal = g.paper ? PAPER : DARK, sp = g.speed, i;
-    var x0mm = g.startS * sp, yc = H / 2, spanS = W / (ppm * sp);
+    var W = g.W, H = g.H, ppm = g.ppm, pal = g.paper ? PAPER : DARK, sp = g.speed, rows = g.rows, i, r;
+    var gpx = g.gutterMm * ppm, rowH = ROW_MM * ppm, rowSec = g.traceMm / sp;
+    var x0mm = g.startS * sp - g.gutterMm;   // paper mm at canvas x = 0, anchored to time zero
+    var forceH = g.totalS >= 3600, fs = g.fs, dpr = g.dpr || 1;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.fillStyle = pal.bg; ctx.fillRect(0, 0, W, H);
 
-    // grid: 1 mm minor, 5 mm major, anchored to time zero so it travels with the trace
+    // grid: 1 mm minor, 5 mm major. Rows are a whole number of big squares, so one pass covers them all.
+    function isMajor(m) { return ((m % 5) + 5) % 5 === 0; }
     function gridPass(major, lw, color) {
-      var o = (lw % 2) / 2;
+      var o = (lw % 2) / 2, m, x, y;
       ctx.beginPath(); ctx.lineWidth = lw; ctx.strokeStyle = color;
-      var m, x, y;
       for (m = Math.floor(x0mm); m <= Math.ceil(x0mm + W / ppm); m++) {
-        if ((((m % 5) + 5) % 5 === 0) !== major) continue;
+        if (isMajor(m) !== major) continue;
         x = Math.round((m - x0mm) * ppm) + o; ctx.moveTo(x, 0); ctx.lineTo(x, H);
       }
-      var nmax = Math.floor(yc / ppm);
-      for (m = -nmax; m <= nmax; m++) {
-        if ((((m % 5) + 5) % 5 === 0) !== major) continue;
-        y = Math.round(yc + m * ppm) + o; ctx.moveTo(0, y); ctx.lineTo(W, y);
+      for (m = 0; m <= Math.floor(H / ppm); m++) {
+        if (isMajor(m) !== major) continue;
+        y = Math.round(m * ppm) + o; ctx.moveTo(0, y); ctx.lineTo(W, y);
       }
       ctx.stroke();
     }
     gridPass(false, g.lineMinor, pal.minor);
     gridPass(true, g.lineMajor, pal.major);
 
-    // whole-second labels
-    ctx.font = g.fs + 'px ' + MONO; ctx.fillStyle = pal.text; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-    var forceH = g.totalS >= 3600;
-    for (i = Math.ceil(g.startS); i <= g.startS + spanS; i++) {
-      var tx = Math.round((i * sp - x0mm) * ppm);
-      ctx.fillText(fmtOffset(i, 0, forceH), tx + g.fs * 0.3, H - g.fs * 0.4);
-    }
-    ctx.fillText(sp + ' mm/s · ' + g.gain + ' mm/mV', g.fs * 0.5, g.fs * 1.2);
+    var d = g.ecg, rate = g.rate, gainPx = g.gain * ppm, k = sp * ppm / rate;
+    var marks = g.marks || [], cal = g.cal || [];
+    function rowOf(t) { return Math.floor((t - g.startS) / rowSec); }
+    function xOf(t, rs) { return gpx + (t - rs) * sp * ppm; }
 
-    // trace
-    var d = g.ecg, rate = g.rate, gainPx = g.gain * ppm, k = sp * ppm / rate, xo = -x0mm * ppm;
-    var iA = Math.max(0, Math.floor(g.startS * rate) - 1);
-    var iB = Math.min(d.length - 1, Math.ceil((g.startS + spanS) * rate) + 1);
-    ctx.beginPath(); ctx.lineWidth = g.traceW; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-    ctx.strokeStyle = pal.trace;
-    var pen = false;
-    for (i = iA; i <= iB; i++) {
-      var v = d[i];
-      if (v !== v) { pen = false; continue; }
-      var y = yc - v * gainPx; if (y < 1) y = 1; else if (y > H - 1) y = H - 1;
-      var x = xo + i * k;
-      if (pen) ctx.lineTo(x, y); else { ctx.moveTo(x, y); pen = true; }
-    }
-    ctx.stroke();
+    for (r = 0; r < rows; r++) {
+      var rs = g.startS + r * rowSec, yTop = r * rowH, yc = yTop + rowH / 2;
 
-    // marks the wearer made
-    var dpr = g.dpr || 1, dash = [4 * dpr, 4 * dpr];
-    (g.marks || []).forEach(function (mk) {
-      var mx = Math.round((mk.t * sp - x0mm) * ppm) + 0.5;
-      if (mx < -400 * dpr || mx > W + 4) return;
-      ctx.save();
-      ctx.strokeStyle = pal.mark; ctx.lineWidth = Math.max(1, Math.round(dpr)); ctx.setLineDash(dash);
-      ctx.beginPath(); ctx.moveTo(mx, 0); ctx.lineTo(mx, H); ctx.stroke(); ctx.restore();
-      var txt = mk.text.length > 48 ? mk.text.slice(0, 47) + '…' : mk.text;
-      ctx.fillStyle = pal.mark; ctx.font = g.fs + 'px ' + MONO;
-      var tw = ctx.measureText(txt).width;
-      if (mx + g.fs * 0.4 + tw > W) { ctx.textAlign = 'right'; ctx.fillText(txt, mx - g.fs * 0.4, g.fs * 2.6); }
-      else { ctx.textAlign = 'left'; ctx.fillText(txt, mx + g.fs * 0.4, g.fs * 2.6); }
-      ctx.textAlign = 'left';
-    });
+      // calibration pulse: 1 mV for CAL_S seconds, then the baseline runs into the trace
+      ctx.beginPath(); ctx.lineWidth = g.traceW; ctx.lineJoin = 'miter'; ctx.lineCap = 'butt'; ctx.strokeStyle = pal.trace;
+      var c1 = 2 * ppm, c2 = (2 + CAL_S * sp) * ppm;
+      ctx.moveTo(0.5 * ppm, yc); ctx.lineTo(c1, yc); ctx.lineTo(c1, yc - gainPx);
+      ctx.lineTo(c2, yc - gainPx); ctx.lineTo(c2, yc); ctx.lineTo(gpx, yc);
+      ctx.stroke();
 
-    // calipers
-    var cal = g.cal || [];
-    if (cal.length) {
-      var xs = cal.map(function (t) { return Math.round((t * sp - x0mm) * ppm) + 0.5; });
-      ctx.strokeStyle = pal.cal; ctx.fillStyle = pal.cal; ctx.lineWidth = Math.max(1, Math.round(dpr * 1.2));
-      xs.forEach(function (x) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); });
-      if (xs.length === 2) {
-        var ya = Math.round(H * 0.82) + 0.5;
-        ctx.beginPath(); ctx.moveTo(xs[0], ya); ctx.lineTo(xs[1], ya); ctx.stroke();
-        var ms = Math.abs(cal[1] - cal[0]) * 1000, label = Math.round(ms) + ' ms';
-        ctx.font = g.fs + 'px ' + MONO; ctx.textAlign = 'center';
-        ctx.fillText(label, (xs[0] + xs[1]) / 2, ya - g.fs * 0.4); ctx.textAlign = 'left';
+      // trace, clipped to this row's paper
+      ctx.save(); ctx.beginPath(); ctx.rect(gpx, yTop, W - gpx, rowH); ctx.clip();
+      var iA = Math.max(0, Math.floor(rs * rate) - 1);
+      var iB = Math.min(d.length - 1, Math.ceil((rs + rowSec) * rate) + 1);
+      ctx.beginPath(); ctx.lineWidth = g.traceW; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      var pen = false, xo = gpx - rs * sp * ppm;
+      for (i = iA; i <= iB; i++) {
+        var v = d[i];
+        if (v !== v) { pen = false; continue; }
+        var y = yc - v * gainPx; if (y < yTop + 1) y = yTop + 1; else if (y > yTop + rowH - 1) y = yTop + rowH - 1;
+        var x = xo + i * k;
+        if (pen) ctx.lineTo(x, y); else { ctx.moveTo(x, y); pen = true; }
       }
+      ctx.stroke();
+
+      // whole-second labels along the bottom of the row
+      ctx.font = fs + 'px ' + MONO; ctx.fillStyle = pal.text; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+      for (i = Math.ceil(rs); i <= rs + rowSec; i++) {
+        ctx.fillText(fmtOffset(i, 0, forceH), Math.round(xOf(i, rs)) + fs * 0.3, yTop + rowH - fs * 0.4);
+      }
+      // row label: clock time where the row starts, heart rate when the file carries RR
+      var hr = rowHr(g.rr, rate, rs, rowSec);
+      var lab = (g.startMs !== null && g.startMs !== undefined ? fmtStamp(g.startMs + rs * 1000, false) : fmtOffset(rs, 0, forceH))
+        + (hr !== null ? '  ·  ' + hr + ' bpm' : '');
+      ctx.fillText(lab, gpx + fs * 0.5, yTop + fs * 1.2);
+      if (r === 0) { ctx.textAlign = 'right'; ctx.fillText(sp + ' mm/s · ' + g.gain + ' mm/mV', W - fs * 0.5, yTop + fs * 1.2); ctx.textAlign = 'left'; }
+
+      // marks the wearer made
+      for (i = 0; i < marks.length; i++) {
+        var mk = marks[i];
+        if (rowOf(mk.t) !== r) continue;
+        var mx = Math.round(xOf(mk.t, rs)) + 0.5;
+        ctx.save();
+        ctx.strokeStyle = pal.mark; ctx.lineWidth = Math.max(1, Math.round(dpr)); ctx.setLineDash([4 * dpr, 4 * dpr]);
+        ctx.beginPath(); ctx.moveTo(mx, yTop); ctx.lineTo(mx, yTop + rowH); ctx.stroke(); ctx.restore();
+        var txt = mk.text.length > 48 ? mk.text.slice(0, 47) + '…' : mk.text;
+        ctx.fillStyle = pal.mark; ctx.font = fs + 'px ' + MONO;
+        var tw = ctx.measureText(txt).width;
+        if (mx + fs * 0.4 + tw > W) { ctx.textAlign = 'right'; ctx.fillText(txt, mx - fs * 0.4, yTop + fs * 2.6); }
+        else { ctx.textAlign = 'left'; ctx.fillText(txt, mx + fs * 0.4, yTop + fs * 2.6); }
+        ctx.textAlign = 'left';
+      }
+      ctx.restore();
+    }
+
+    // calipers: a line in whichever row each falls; the span is written next to the second
+    if (cal.length) {
+      ctx.strokeStyle = pal.cal; ctx.fillStyle = pal.cal; ctx.lineWidth = Math.max(1, Math.round(dpr * 1.2));
+      ctx.font = fs + 'px ' + MONO; ctx.textAlign = 'center';
+      var cr = cal.map(rowOf), cx = cal.map(function (t, j) { return Math.round(xOf(t, g.startS + cr[j] * rowSec)) + 0.5; });
+      cal.forEach(function (t, j) {
+        if (cr[j] < 0 || cr[j] >= rows) return;
+        ctx.beginPath(); ctx.moveTo(cx[j], cr[j] * rowH); ctx.lineTo(cx[j], (cr[j] + 1) * rowH); ctx.stroke();
+      });
+      if (cal.length === 2 && cr[1] >= 0 && cr[1] < rows) {
+        var ya = Math.round(cr[1] * rowH + rowH * 0.82) + 0.5, label = Math.round(Math.abs(cal[1] - cal[0]) * 1000) + ' ms';
+        if (cr[0] === cr[1]) {
+          ctx.beginPath(); ctx.moveTo(cx[0], ya); ctx.lineTo(cx[1], ya); ctx.stroke();
+          ctx.fillText(label, (cx[0] + cx[1]) / 2, ya - fs * 0.4);
+        } else ctx.fillText(label, cx[1], ya - fs * 0.4);
+      }
+      ctx.textAlign = 'left';
     }
   }
 
-  function Renderer(canvas, ecg, rate, totalS) {
+  function Renderer(canvas, ecg, rate, totalS, rr, startMs) {
     this.canvas = canvas; this.ctx = canvas.getContext('2d');
-    this.ecg = ecg; this.rate = rate; this.totalS = totalS;
-    this.opts = { speed: 25, gain: 10, paper: false, marks: [], cal: [] };
-    this.windowSec = 10; this.lastStart = 0;
+    this.ecg = ecg; this.rate = rate; this.totalS = totalS; this.rr = rr || null; this.startMs = startMs;
+    this.opts = { speed: 25, gain: 10, paper: true, marks: [], cal: [] };
+    this.rows = 3; this.rowSec = 10; this.windowSec = 30; this.lastStart = 0;
     this.resize();
   }
   Renderer.prototype.resize = function () {
     var c = this.canvas, dpr = root.devicePixelRatio || 1;
-    var cssW = Math.max(240, c.parentNode.clientWidth || c.clientWidth || 600);
-    var base = cssW < 520 ? 3 : 4;                       // css px per mm on screen
+    this.cssW = Math.max(240, c.parentNode.clientWidth || c.clientWidth || 600);
+    var base = this.cssW < 520 ? 3 : 4;                   // css px per mm on screen
     this.dpr = dpr;
     this.ppm = Math.max(2, Math.round(base * dpr));       // whole device px per mm: crisp grid
-    c.width = Math.round(cssW * dpr);
-    c.height = STRIP_MM * this.ppm;
-    c.style.width = cssW + 'px';
-    c.style.height = (c.height / dpr) + 'px';
     this.updateWindow();
   };
+  /* The gutter depends on the speed, so a speed change re-lays the canvas out. */
   Renderer.prototype.updateWindow = function () {
-    this.windowSec = this.canvas.width / (this.ppm * this.opts.speed);
+    var c = this.canvas, lay = stripLayout(Math.round(this.cssW * this.dpr), this.ppm, this.opts.speed);
+    this.lay = lay;
+    c.width = lay.widthMm * this.ppm;
+    c.height = this.rows * ROW_MM * this.ppm;
+    c.style.width = (c.width / this.dpr) + 'px';
+    c.style.height = (c.height / this.dpr) + 'px';
+    this.rowSec = lay.rowSec;
+    this.windowSec = lay.rowSec * this.rows;
   };
   Renderer.prototype.maxStart = function () { return Math.max(0, this.totalS - this.windowSec); };
+  /* File time under a canvas point (device px). */
+  Renderer.prototype.timeAt = function (startS, xDev, yDev) {
+    var row = Math.max(0, Math.min(this.rows - 1, Math.floor(yDev / (ROW_MM * this.ppm))));
+    return startS + row * this.rowSec + (xDev - this.lay.gutterMm * this.ppm) / (this.ppm * this.opts.speed);
+  };
   Renderer.prototype.draw = function (windowStartS) {
     this.lastStart = windowStartS;
     var o = this.opts, dpr = this.dpr;
     drawStrip(this.ctx, {
       W: this.canvas.width, H: this.canvas.height, ppm: this.ppm, startS: windowStartS,
-      speed: o.speed, gain: o.gain, paper: o.paper, ecg: this.ecg, rate: this.rate,
+      speed: o.speed, gain: o.gain, paper: o.paper, rows: this.rows, gutterMm: this.lay.gutterMm, traceMm: this.lay.traceMm,
+      ecg: this.ecg, rate: this.rate, rr: this.rr, startMs: this.startMs,
       marks: o.marks, cal: o.cal, dpr: dpr, fs: Math.round(11 * dpr), traceW: Math.max(1.25, 1.5 * dpr),
       lineMinor: 1, lineMajor: dpr >= 1.5 ? 2 : 1, totalS: this.totalS
     });
@@ -432,8 +524,9 @@
       return extractChannelAsync(parsed, pick.index, function (f) {
         if (parsed.records * parsed.recBytes > 8e6) setMsg('Reading ' + name + '… ' + Math.round(f * 100) + ' %');
       }).then(function (ecg) {
+        var ri = pickRr(parsed.signals, pick.index), rr = ri >= 0 ? extractChannel(parsed, ri, true) : null;
         parsed.buffer = null;
-        show(parsed, pick, ecg, name, buf.byteLength);
+        show(parsed, pick, ecg, rr, name, buf.byteLength);
       });
     }
 
@@ -485,10 +578,11 @@
         el.textContent = Math.round(ms) + ' ms  ·  ' + (ms > 0 ? (60000 / ms).toFixed(1) : '–') + ' bpm if repeated. Click again to start over.';
       }
     }
-    function placeCaliper(clientX) {
+    function placeCaliper(clientX, clientY) {
       var rect = strip.getBoundingClientRect();
       var xDev = (clientX - rect.left) * (strip.width / rect.width);
-      var t = S.start + xDev / (S.r.ppm * S.r.opts.speed);
+      var yDev = (clientY - rect.top) * (strip.height / rect.height);
+      var t = S.r.timeAt(S.start, xDev, yDev);
       if (S.cal.length >= 2) S.cal = [];
       S.cal.push(t);
       redraw();
@@ -496,7 +590,7 @@
     function clearCal() { S.cal = []; redraw(); }
 
     /* ---- build the page for a loaded file ---- */
-    function show(parsed, pick, ecg, name, size) {
+    function show(parsed, pick, ecg, rr, name, size) {
       var h = parsed.header, sig = parsed.signals[pick.index];
       var rate = sig.rate;
       var total = ecg.length / rate;
@@ -504,8 +598,8 @@
         .map(function (a) { return { t: a.onsetS, text: a.text }; });
 
       vwrap.hidden = false;
-      var r = new Renderer(strip, ecg, rate, total);
-      S = { parsed: parsed, pick: pick, name: name, size: size, ecg: ecg, rate: rate, total: total, r: r,
+      var r = new Renderer(strip, ecg, rate, total, rr, h.startMs);
+      S = { parsed: parsed, pick: pick, name: name, size: size, ecg: ecg, rr: rr, rate: rate, total: total, r: r,
             start: 0, marks: marks, cal: [], calOn: false };
 
       // header card
@@ -514,24 +608,49 @@
         var dt = document.createElement('dt'), dd = document.createElement('dd');
         dt.textContent = k; dd.textContent = v; kv.appendChild(dt); kv.appendChild(dd);
       }
-      row('File', name + '  (' + fmtBytes(size) + ')');
-      row('Start', h.startMs !== null ? fmtStamp(h.startMs, true) : (h.startDate + ' ' + h.startTime));
-      row('Length', fmtDuration(total) + (parsed.recordOnsets ? ' (with gaps)' : ''));
-      var recTokens = h.recording.split(/\s+/);
+      var startTxt = h.startMs !== null ? fmtStamp(h.startMs, true) : (h.startDate + ' ' + h.startTime);
+      var lenTxt = fmtDuration(total) + (parsed.recordOnsets ? ' (with gaps)' : '');
+      var recTokens = h.recording.split(/\s+/), appTxt = '', devTxt = '';
       var appTok = recTokens.filter(function (t) { return /^Fairest_Heart/i.test(t); })[0];
       if (appTok) {
-        row('App', appTok.replace(/^Fairest_Heart-?/i, 'Fairest Heart ').trim());
-        var di = recTokens.indexOf(appTok), dev = recTokens.slice(di + 1).join(' ');
-        if (dev) row('Device', dev);
-      } else if (h.recording) row('Recording', h.recording);
-      row('Patient field', h.patient || '(empty)');
+        appTxt = appTok.replace(/^Fairest_Heart-?/i, 'Fairest Heart ').trim();
+        var di = recTokens.indexOf(appTok);
+        devTxt = recTokens.slice(di + 1).join(' ').replace(/^Polar-H10$/i, 'Polar H10 chest strap, single lead');
+      }
+      // banner above the strip: who, then the recording
+      var pt = parsePatient(h.patient), who = [], rec = [];
+      if (pt.plus) {
+        who.push(pt.name || 'No name in the file');
+        if (pt.birthMs !== null) who.push('born ' + fmtDate(pt.birthMs) + (h.startMs !== null ? ' (' + ageAt(pt.birthMs, h.startMs) + ')' : ''));
+        if (pt.sex) who.push(pt.sex === 'M' ? 'Male' : 'Female');
+        if (pt.code) who.push('ID ' + pt.code);
+      } else who.push(h.patient && h.patient !== 'X' ? h.patient : 'No name in the file');
+      rec.push(startTxt); rec.push(lenTxt);
+      if (devTxt) rec.push(devTxt); else if (!appTok && h.recording) rec.push(h.recording);
+      if (appTxt) rec.push(appTxt);
+      if (rr) rec.push('heart rate per row from the file\u2019s RR channel');
+      $('bnWho').textContent = who.join('  \u00b7  ');
+      $('bnRec').textContent = rec.join('  \u00b7  ');
+      S.banner = { who: who.join('  \u00b7  '), rec: rec.join('  \u00b7  ') };
+      // file details
+      row('File', name + '  (' + fmtBytes(size) + ')');
+      row('Start', startTxt);
+      row('Length', lenTxt);
+      if (appTxt) row('App', appTxt);
+      if (devTxt) row('Device', devTxt); else if (h.recording) row('Recording', h.recording);
+      if (pt.plus) {
+        row('Name', pt.name || '(not in the file)');
+        row('Born', pt.birthMs !== null ? fmtDate(pt.birthMs) : '(not in the file)');
+        row('Sex', pt.sex === 'M' ? 'Male' : pt.sex === 'F' ? 'Female' : '(not in the file)');
+        row('ID', pt.code || '(not in the file)');
+      } else row('Patient field', h.patient || '(empty)');
       row('Format', h.kind === 'EDF' ? 'EDF' : h.kind === 'EDF+C' ? 'EDF+ (continuous)' : 'EDF+ (with gaps)');
       var ul = $('sigList'); ul.textContent = '';
       parsed.signals.forEach(function (s, i) {
         var li = document.createElement('li');
         var txt = s.isAnnotations ? 'Marks and notes (annotations)' :
           (s.label || 'Signal ' + (i + 1)) + '  ·  ' + (Math.round(s.rate * 100) / 100) + ' per second' + (s.dim ? '  ·  ' + s.dim : '');
-        if (!s.isAnnotations) txt += i === pick.index ? '  ·  drawn below' : '  ·  listed, not drawn';
+        if (!s.isAnnotations) txt += i === pick.index ? '  ·  drawn' : (rr && /^RR$/i.test(s.label)) ? '  ·  heart rate per row' : '  ·  listed, not drawn';
         li.textContent = txt; ul.appendChild(li);
       });
       var notes = [];
@@ -547,8 +666,10 @@
 
       // controls
       setPressed('speed', '25'); setPressed('gain', '10');
-      $('paperBtn').setAttribute('aria-pressed', 'false');
+      r.opts.paper = true;
+      $('paperBtn').setAttribute('aria-pressed', 'true');
       $('calBtn').setAttribute('aria-pressed', 'false');
+      strip.classList.remove('cal');
       setMsg('');
       setStart(0);
       vwrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -570,7 +691,7 @@
         var tx = document.createElement('span'); tx.className = 'tx'; tx.textContent = a.text;
         b.appendChild(tm); b.appendChild(tx);
         b.addEventListener('click', function () {
-          setStart(a.onsetS - S.r.windowSec / 3);
+          setStart(a.onsetS - S.r.rowSec / 3);
           $('stripCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
         li.appendChild(b); list.appendChild(li);
@@ -661,7 +782,7 @@
     function endDrag(e, cancelled) {
       if (!drag) return;
       var d = drag; drag = null;
-      if (!cancelled && !d.moved && S && S.calOn) placeCaliper(e.clientX);
+      if (!cancelled && !d.moved && S && S.calOn) placeCaliper(e.clientX, e.clientY);
     }
     strip.addEventListener('pointerup', function (e) { endDrag(e, false); });
     strip.addEventListener('pointercancel', function (e) { endDrag(e, true); });
@@ -671,7 +792,7 @@
     }, { passive: false });
     strip.addEventListener('keydown', function (e) {
       if (!S) return;
-      var big = S.r.windowSec, small = S.r.windowSec * 0.1, handled = true;
+      var big = S.r.windowSec, small = S.r.rowSec * 0.1, handled = true;
       if (e.key === 'ArrowLeft') setStart(S.start - (e.shiftKey ? big : small));
       else if (e.key === 'ArrowRight') setStart(S.start + (e.shiftKey ? big : small));
       else if (e.key === 'PageUp') setStart(S.start - big);
@@ -705,23 +826,27 @@
       rt = setTimeout(function () { if (S) { S.r.resize(); S.start = clampStart(S.start); redraw(); } }, 120);
     });
 
-    /* ---- print: a separate canvas at 12 device px per mm, paper look, true size ---- */
+    /* ---- print: a separate canvas at 12 device px per mm, paper look, true size:
+       three rows, 250 mm of trace each (10 s at 25 mm/s), landscape ---- */
     function preparePrint() {
       if (!S) return;
-      var o = S.r.opts, pc = $('printCanvas'), ppm = 12;
-      var sec = Math.min(S.r.windowSec, 250 / o.speed), widthMm = sec * o.speed;
-      pc.width = Math.round(widthMm * ppm); pc.height = STRIP_MM * ppm;
-      pc.style.width = widthMm + 'mm'; pc.style.height = STRIP_MM + 'mm';
+      var o = S.r.opts, pc = $('printCanvas'), ppm = 12, rows = 3;
+      var lay = stripLayout(259 * ppm, ppm, o.speed), sec = lay.rowSec * rows;
+      pc.width = lay.widthMm * ppm; pc.height = rows * ROW_MM * ppm;
+      pc.style.width = lay.widthMm + 'mm'; pc.style.height = (rows * ROW_MM) + 'mm';
       drawStrip(pc.getContext('2d'), {
         W: pc.width, H: pc.height, ppm: ppm, startS: S.start, speed: o.speed, gain: o.gain, paper: true,
-        ecg: S.ecg, rate: S.rate, marks: S.marks, cal: S.cal, dpr: 3, fs: 34, traceW: 3,
+        rows: rows, gutterMm: lay.gutterMm, traceMm: lay.traceMm,
+        ecg: S.ecg, rate: S.rate, rr: S.rr, startMs: S.parsed.header.startMs,
+        marks: S.marks, cal: S.cal, dpr: 3, fs: 34, traceW: 3,
         lineMinor: 1, lineMajor: 2, totalS: S.total
       });
-      var w = wallMs(S.start), w2 = wallMs(S.start + sec), h = S.parsed.header;
-      $('pFile').textContent = 'File start: ' + (h.startMs !== null ? fmtStamp(h.startMs, true) : h.startDate + ' ' + h.startTime);
+      var w = wallMs(S.start), w2 = wallMs(S.start + sec);
+      $('pFile').textContent = S.banner.who + '  ·  ' + S.banner.rec;
       $('pWin').textContent = 'This strip: ' + (w !== null ? fmtStamp(w, true) + ' to ' + fmtStamp(w2, false) + '  ·  ' : '')
-        + 'file time ' + fmtOffset(S.start, 1, S.total >= 3600) + ' to ' + fmtOffset(S.start + sec, 1, S.total >= 3600);
-      $('pScale').textContent = o.speed + ' mm/s · ' + o.gain + ' mm/mV';
+        + 'file time ' + fmtOffset(S.start, 1, S.total >= 3600) + ' to ' + fmtOffset(S.start + sec, 1, S.total >= 3600)
+        + '  ·  rows of ' + lay.rowSec.toFixed(1) + ' s, each continuing the one above';
+      $('pScale').textContent = o.speed + ' mm/s · ' + o.gain + ' mm/mV · the square pulse at the left of each row is 1 mV';
     }
     root.addEventListener('beforeprint', preparePrint);
   }
@@ -730,7 +855,9 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { parseEdf: parseEdf, extractChannel: extractChannel, parseTals: parseTals,
-                       pickEcg: pickEcg, extractChannelAsync: extractChannelAsync };
+                       pickEcg: pickEcg, pickRr: pickRr, extractChannelAsync: extractChannelAsync,
+                       parsePatient: parsePatient, ageAt: ageAt, stripLayout: stripLayout, rowHr: rowHr,
+                       drawStrip: drawStrip, ROW_MM: ROW_MM };
   }
   if (typeof document !== 'undefined' && document.getElementById && document.getElementById('strip')) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initUi); else initUi();

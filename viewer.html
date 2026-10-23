@@ -57,6 +57,12 @@
 .vmsg.warn{border-color:var(--amber);background:#241d0b}
 .vcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:14px;min-width:0}
 .vcard h2{font-size:21px}
+.banner{display:grid;gap:4px}
+.bn-who{font-size:18px;font-weight:600;letter-spacing:-.01em}
+.bn-rec{color:var(--dim);font-size:14.5px}
+details.vcard{display:block;padding:0 18px;margin:0}
+details.vcard>summary{padding:16px 0;font-size:19px;font-weight:600}
+details.vcard .inner{display:grid;gap:14px;padding:4px 0 18px}
 .vbtn{font:inherit;font-size:15px;color:var(--fg);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:8px 15px;cursor:pointer;min-height:40px;white-space:nowrap}
 .vbtn:hover{border-color:var(--teal-dim)}
 .vbtn[aria-pressed="true"]{background:#10272a;border-color:var(--teal-dim);color:var(--teal)}
@@ -88,7 +94,7 @@
 .nothing{border-top:1px solid var(--line);padding-top:18px;color:var(--dim);font-size:15px}
 .print-only{display:none}
 @media print{
-  @page{size:landscape;margin:10mm}
+  @page{size:landscape;margin:8mm}
   html,body{background:#fff !important;color:#000 !important}
   .bar,footer,.noprint{display:none !important}
   main.page{padding:0 !important}
@@ -119,15 +125,9 @@
   <div class="vmsg noprint" id="msg" role="status" aria-live="polite" hidden></div>
 
   <div id="viewer" hidden class="vw" style="padding-top:0">
-    <section class="vcard noprint" aria-label="About this file">
-      <h2>This file</h2>
-      <dl class="kv" id="hdr"></dl>
-      <div><div class="dim small" style="margin-bottom:4px">Signals in the file</div><ul id="sigList"></ul></div>
-      <div id="hdrNotes" hidden></div>
-    </section>
-
     <section class="vcard" id="stripCard" aria-label="Strip">
-      <h2 class="noprint">Strip</h2>
+      <div class="banner noprint"><div class="bn-who" id="bnWho"></div><div class="bn-rec" id="bnRec"></div></div>
+      <div id="hdrNotes" class="noprint" hidden></div>
       <div class="ctl noprint">
         <div class="grp" role="group" aria-label="Speed"><span>Speed</span>
           <button class="vbtn" type="button" data-speed="25" aria-pressed="true">25 mm/s</button>
@@ -137,7 +137,7 @@
           <button class="vbtn" type="button" data-gain="10" aria-pressed="true">10</button>
           <button class="vbtn" type="button" data-gain="20" aria-pressed="false">20 mm/mV</button></div>
         <div class="grp">
-          <button class="vbtn" type="button" id="paperBtn" aria-pressed="false">Paper look</button>
+          <button class="vbtn" type="button" id="paperBtn" aria-pressed="true">Paper look</button>
           <button class="vbtn" type="button" id="calBtn" aria-pressed="false">Calipers</button>
           <button class="vbtn" type="button" id="printBtn">Print</button></div>
       </div>
@@ -153,7 +153,7 @@
         </div>
         <input id="slider" type="range" min="0" max="0" step="0.05" value="0" aria-label="Position in the recording" style="margin-top:8px">
       </div>
-      <p class="small dim noprint">Drag the strip to move along it. Arrow keys step a tenth of a window; hold Shift or use Page Up and Page Down for a whole window. The grid is drawn to scale (25 mm per second) when printed at 100 %; on screen it is only as large as your display makes it. Amber dashes are marks the wearer made.</p>
+      <p class="small dim noprint">Three rows, each continuing the one above. The square pulse at the left of every row is 1 mV. The clock at the top left of a row is where it starts; the heart rate next to it comes from the file's RR channel when it has one. Drag the strip to move along it. Arrow keys step a tenth of a row; hold Shift or use Page Up and Page Down for all three rows. Printed at 100 % the paper is true to scale (25 mm per second, 10 s per row); on screen it is only as large as your display makes it. Amber dashes are marks the wearer made.</p>
     </section>
 
     <section class="vcard noprint" aria-label="Marks and notes">
@@ -163,6 +163,14 @@
       <ul id="marks"></ul>
       <p class="nothing" id="noMarks" hidden>This file has no marks or notes.</p>
     </section>
+
+    <details class="vcard noprint" id="fileCard">
+      <summary>File details</summary>
+      <div class="inner">
+        <dl class="kv" id="hdr"></dl>
+        <div><div class="dim small" style="margin-bottom:4px">Signals in the file</div><ul id="sigList"></ul></div>
+      </div>
+    </details>
   </div>
 
   <p class="fine noprint">Nothing leaves your computer. The file is read by this page in your browser; there is no upload and no account. Not a medical device. This page shows the file as recorded and makes no statement about the heart.</p>
@@ -177,7 +185,7 @@
     <p class="pf">Not a medical device. This page shows the file as recorded; it makes no statement about the heart.</p>
   </div>
 </div></div>
-<script src="viewer.js?v=0.105.0"></script>
+<script src="viewer.js?v=0.105.1"></script>
 </main>
 <!-- ============ footer ============ -->
 <footer>
@@ -192,5 +200,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.105.0"></script>
+<script src="site.js?v=0.105.1"></script>
 </body></html>
