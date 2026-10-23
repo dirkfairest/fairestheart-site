@@ -1,0 +1,193 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Viewer · open a Fairest Heart EDF+ file in your browser</title>
+<meta name="description" content="Open an EDF or EDF+ file from Fairest Heart in your browser. Nothing is uploaded: the file is read on your own computer.">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48"><link rel="icon" type="image/png" sizes="256x256" href="icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="canonical" href="https://fairestheart.com/viewer.html">
+<meta name="theme-color" content="#0b0e14">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Fairest Heart">
+<meta property="og:url" content="https://fairestheart.com/viewer.html">
+<meta property="og:title" content="Viewer · open a Fairest Heart EDF+ file in your browser">
+<meta property="og:description" content="Open an EDF or EDF+ file from Fairest Heart in your browser. Nothing is uploaded: the file is read on your own computer.">
+<meta property="og:image" content="https://fairestheart.com/og-1200x630.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fairest Heart: a live ECG on a phone. Your ECG, all night long.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Viewer · open a Fairest Heart EDF+ file in your browser"><meta name="twitter:description" content="Open an EDF or EDF+ file from Fairest Heart in your browser. Nothing is uploaded: the file is read on your own computer.">
+<meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<!-- ============ title bar ============ -->
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="">FAIREST HEART</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav" id="nav" aria-label="Site">
+      <a href="index.html">Home</a>
+      <a href="plans.html">Plans</a>
+      <a href="help.html">Help</a>
+      <a href="viewer.html" aria-current="page">Viewer</a>
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="cta" href="https://play.google.com/store/apps/details?id=com.fairestmedia.fairestheart" rel="noopener"><svg class="store" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 2.2a1.4 1.4 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.9-9.8zM15 10.5 5.5 1.9l11.1 6.4zM16.6 8.3l-2.9 2.9 2.9 2.9 3.6-2.1c.9-.5.9-1.2 0-1.7zM5.5 22.1 15 13.5l1.6 1.6z"/></svg>Get it on Google Play</a>
+  </div>
+</header>
+
+<main class="page">
+<style>
+.vw [hidden],.vw[hidden]{display:none !important}
+.vw{padding-top:48px;display:grid;gap:22px}
+.vw-head{display:grid;gap:12px;max-width:44em}
+.vw-head p{color:var(--dim)}
+.drop{border:1.5px dashed var(--teal-dim);border-radius:var(--r);background:var(--card);padding:32px 20px;display:grid;gap:14px;justify-items:center;text-align:center}
+.drop.over{background:#10272a;border-color:var(--teal)}
+.drop .row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.drop p{color:var(--dim);font-size:15px}
+#file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.vmsg{border-left:4px solid var(--teal);background:#10201d;padding:12px 16px;border-radius:8px}
+.vmsg.warn{border-color:var(--amber);background:#241d0b}
+.vcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:14px;min-width:0}
+.vcard h2{font-size:21px}
+.vbtn{font:inherit;font-size:15px;color:var(--fg);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:8px 15px;cursor:pointer;min-height:40px;white-space:nowrap}
+.vbtn:hover{border-color:var(--teal-dim)}
+.vbtn[aria-pressed="true"]{background:#10272a;border-color:var(--teal-dim);color:var(--teal)}
+.vbtn:disabled{opacity:.4;cursor:default}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.ctl .grp{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.ctl .grp>span{color:var(--dim);font-size:14px}
+.vw .kv{grid-template-columns:auto 1fr;font-size:15.5px}
+.vw .kv dd{overflow-wrap:anywhere}
+#sigList{margin:0;padding-left:20px;color:var(--dim);font-size:15px}
+#hdrNotes{border-left:4px solid var(--amber);background:#241d0b;padding:10px 14px;border-radius:8px;font-size:15px}
+#viewer .cwrap{min-width:0;width:100%}
+#strip{display:block;max-width:100%;border-radius:var(--r-s);touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;outline-offset:3px}
+#strip.cal{cursor:crosshair}
+#strip:active{cursor:grabbing}
+#overview{display:block;max-width:100%;border-radius:8px;cursor:pointer;touch-action:none}
+#slider{width:100%;accent-color:var(--teal);margin:0}
+.winfo{font-family:var(--mono);font-size:13.5px;color:var(--dim);overflow-wrap:anywhere}
+#calOut{font-family:var(--mono);font-size:14px;color:var(--teal);min-height:1.4em}
+.mtools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:var(--dim);font-size:15px}
+#marks{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:340px;overflow:auto}
+.arow{width:100%;display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 14px;text-align:left;font:inherit;font-size:15px;
+  color:var(--dim);background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-s);padding:9px 12px;cursor:pointer}
+.arow:hover{border-color:var(--teal-dim)}
+.arow .at{font-size:13.5px;white-space:nowrap}
+.arow.mark{color:var(--amber);border-color:#4a3a10}
+.arow .tx{overflow-wrap:anywhere}
+@media(max-width:520px){.arow{grid-template-columns:1fr}}
+.nothing{border-top:1px solid var(--line);padding-top:18px;color:var(--dim);font-size:15px}
+.print-only{display:none}
+@media print{
+  @page{size:landscape;margin:10mm}
+  html,body{background:#fff !important;color:#000 !important}
+  .bar,footer,.noprint{display:none !important}
+  main.page{padding:0 !important}
+  .wrap{max-width:none;padding:0}
+  .vw{padding:0;gap:0}
+  .vw>:not(.print-only){display:none !important}
+  .print-only{display:block !important;color:#000;font:11pt/1.4 var(--font)}
+  .print-only p{margin:0 0 2mm}
+  .print-only .pf{font-size:9pt;margin-top:3mm}
+  #printCanvas{display:block;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+<div class="wrap"><div class="vw">
+  <div class="vw-head noprint">
+    <span class="eyebrow">Viewer</span>
+    <h1 style="font-size:clamp(30px,4.5vw,44px)">Open a Fairest Heart file.</h1>
+    <p>Someone shared an EDF or EDF+ file from Fairest Heart with you. Open it here to see the trace on ECG paper, step through it and read what the wearer marked. The file is read on your own computer and never uploaded.</p>
+  </div>
+
+  <div class="drop noprint" id="drop">
+    <div class="row">
+      <button class="cta teal" id="openBtn" type="button">Open file</button>
+      <button class="cta ghost" id="sampleBtn" type="button">Try the sample</button>
+    </div>
+    <p>or drop an .edf file here</p>
+    <input id="file" type="file" accept=".edf,.EDF" aria-label="Open an EDF file">
+  </div>
+  <div class="vmsg noprint" id="msg" role="status" aria-live="polite" hidden></div>
+
+  <div id="viewer" hidden class="vw" style="padding-top:0">
+    <section class="vcard noprint" aria-label="About this file">
+      <h2>This file</h2>
+      <dl class="kv" id="hdr"></dl>
+      <div><div class="dim small" style="margin-bottom:4px">Signals in the file</div><ul id="sigList"></ul></div>
+      <div id="hdrNotes" hidden></div>
+    </section>
+
+    <section class="vcard" id="stripCard" aria-label="Strip">
+      <h2 class="noprint">Strip</h2>
+      <div class="ctl noprint">
+        <div class="grp" role="group" aria-label="Speed"><span>Speed</span>
+          <button class="vbtn" type="button" data-speed="25" aria-pressed="true">25 mm/s</button>
+          <button class="vbtn" type="button" data-speed="50" aria-pressed="false">50 mm/s</button></div>
+        <div class="grp" role="group" aria-label="Gain"><span>Gain</span>
+          <button class="vbtn" type="button" data-gain="5" aria-pressed="false">5</button>
+          <button class="vbtn" type="button" data-gain="10" aria-pressed="true">10</button>
+          <button class="vbtn" type="button" data-gain="20" aria-pressed="false">20 mm/mV</button></div>
+        <div class="grp">
+          <button class="vbtn" type="button" id="paperBtn" aria-pressed="false">Paper look</button>
+          <button class="vbtn" type="button" id="calBtn" aria-pressed="false">Calipers</button>
+          <button class="vbtn" type="button" id="printBtn">Print</button></div>
+      </div>
+      <div class="winfo noprint" id="winInfo"></div>
+      <div class="cwrap"><canvas id="strip" tabindex="0" role="img" aria-label="The recorded trace on ECG paper. Drag, or use the arrow keys, to move along the recording."></canvas></div>
+      <div id="calOut" class="noprint" aria-live="polite"></div>
+      <div class="noprint">
+        <canvas id="overview" aria-label="The whole recording. Click to jump."></canvas>
+        <div class="ctl" style="margin-top:8px">
+          <div class="grp">
+            <button class="vbtn" type="button" id="prevBtn">&larr; Previous</button>
+            <button class="vbtn" type="button" id="nextBtn">Next &rarr;</button></div>
+        </div>
+        <input id="slider" type="range" min="0" max="0" step="0.05" value="0" aria-label="Position in the recording" style="margin-top:8px">
+      </div>
+      <p class="small dim noprint">Drag the strip to move along it. Arrow keys step a tenth of a window; hold Shift or use Page Up and Page Down for a whole window. The grid is drawn to scale (25 mm per second) when printed at 100 %; on screen it is only as large as your display makes it. Amber dashes are marks the wearer made.</p>
+    </section>
+
+    <section class="vcard noprint" aria-label="Marks and notes">
+      <h2>What the wearer marked</h2>
+      <div class="mtools" id="marksTools"><label><input type="checkbox" id="marksOnly" checked> Marks only</label>
+        <span>Click an entry to jump to it.</span></div>
+      <ul id="marks"></ul>
+      <p class="nothing" id="noMarks" hidden>This file has no marks or notes.</p>
+    </section>
+  </div>
+
+  <p class="fine noprint">Nothing leaves your computer. The file is read by this page in your browser; there is no upload and no account. Not a medical device. This page shows the file as recorded and makes no statement about the heart.</p>
+
+  <div class="print-only" id="printArea" aria-hidden="true">
+    <p><strong>Fairest Heart strip</strong></p>
+    <p id="pFile"></p>
+    <p id="pWin"></p>
+    <p id="pScale"></p>
+    <canvas id="printCanvas"></canvas>
+    <p class="pf">Fairest Heart &middot; fairestheart.com/viewer.html</p>
+    <p class="pf">Not a medical device. This page shows the file as recorded; it makes no statement about the heart.</p>
+  </div>
+</div></div>
+<script src="viewer.js?v=0.105.0"></script>
+</main>
+<!-- ============ footer ============ -->
+<footer>
+  <div class="wrap">
+    <div><div class="brand" style="margin-bottom:12px"><img src="icon.png" alt="">FAIREST HEART</div>
+      <p>A record of your own heart, in your own hands. Stays on your phone.</p>
+      <p style="margin-top:10px" class="small">Not a medical device, not a replacement for a recorder from your clinic. If you are worried about your heart, see a clinician.</p></div>
+    <div><h4>App</h4><ul><li><a href="index.html">Home</a></li><li><a href="plans.html">Plans</a></li><li><a href="help.html">Help</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="help.html">Third-party licences</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="contact.html">help@fairestheart.com</a></li><li>Fairest Media LLC</li><li>United States</li></ul></div>
+  </div>
+  <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
+</footer>
+
+<script src="site.js?v=0.105.0"></script>
+</body></html>
