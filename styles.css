@@ -244,5 +244,6 @@ details p{padding-bottom:16px}
 /* the store button until the public release: looks like the button, does nothing */
 .cta.soon{cursor:default;opacity:.85}
 .cta.soon:hover{filter:none}
+.cta .when{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--line);color:var(--fg);margin-left:2px}
 .cta .store{width:18px;height:18px;flex:none}
 .hero-why{margin:0}.hero-why a{color:var(--teal);font-weight:500}
