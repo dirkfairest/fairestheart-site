@@ -1,6 +1,13 @@
 (function(){
   var nav=document.getElementById('nav'), btn=document.getElementById('menuBtn');
   btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false')});
+  // the three groups: a tap or Enter on the button opens one and closes the
+  // others; Escape or a click elsewhere closes them all (hover needs no script)
+  var grps=[].slice.call(nav.querySelectorAll('.grp'));
+  function closeAll(except){grps.forEach(function(g){if(g!==except){g.classList.remove('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','false')}})}
+  grps.forEach(function(g){var b=g.querySelector('.grp-btn');b.addEventListener('click',function(e){e.stopPropagation();var o=g.classList.toggle('open');closeAll(g);b.setAttribute('aria-expanded',o?'true':'false')})});
+  document.addEventListener('click',function(e){if(!nav.contains(e.target))closeAll()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();nav.classList.remove('open');btn.setAttribute('aria-expanded','false')}});
 
   var cb=document.getElementById('copyBtn');
   if(cb)cb.addEventListener('click',function(){

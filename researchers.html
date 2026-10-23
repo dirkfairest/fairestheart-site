@@ -27,16 +27,38 @@
     <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">☰</button>
     <nav class="nav" id="nav" aria-label="Site">
       <a href="index.html">Home</a>
-      <a href="plans.html">Plans</a>
-      <a href="founders.html">Founders</a>
-      <a href="clinics.html">Clinics</a>
-      <a href="sponsors.html">Sponsors</a>
-      <a href="help.html">Help</a>
-      <a href="viewer.html">Viewer</a>
-      <a href="changelog.html">Changelog</a>
-      <a class="sec" href="privacy.html">Privacy</a>
-      <a class="sec" href="terms.html">Terms</a>
-      <a class="sec" href="contact.html">Contact</a>
+      <div class="grp">
+        <button class="grp-btn" type="button" aria-expanded="false">Get started<span class="chev" aria-hidden="true"></span></button>
+        <div class="menu"><div class="menu-in">
+          <a href="get-started.html">Get started</a>
+          <a href="plans.html">Plans</a>
+          <a href="help.html">Help</a>
+        </div></div>
+      </div>
+      <div class="grp cur">
+        <button class="grp-btn" type="button" aria-expanded="false">Clinics &amp; research<span class="chev" aria-hidden="true"></span></button>
+        <div class="menu"><div class="menu-in">
+          <a href="clinics.html">Clinics</a>
+          <a href="researchers.html" aria-current="page">Researchers</a>
+          <a href="viewer.html">Viewer</a>
+        </div></div>
+      </div>
+      <div class="grp">
+        <button class="grp-btn" type="button" aria-expanded="false">Support<span class="chev" aria-hidden="true"></span></button>
+        <div class="menu"><div class="menu-in">
+          <a href="founders.html">Founders</a>
+          <a href="sponsors.html">Sponsors</a>
+        </div></div>
+      </div>
+      <div class="grp">
+        <button class="grp-btn" type="button" aria-expanded="false">More<span class="chev" aria-hidden="true"></span></button>
+        <div class="menu"><div class="menu-in">
+          <a href="changelog.html">Changelog</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="contact.html">Contact</a>
+        </div></div>
+      </div>
     </nav>
     <a class="cta" href="https://play.google.com/store/apps/details?id=com.fairestmedia.fairestheart" rel="noopener"><svg class="store" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 2.2a1.4 1.4 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.9-9.8zM15 10.5 5.5 1.9l11.1 6.4zM16.6 8.3l-2.9 2.9 2.9 2.9 3.6-2.1c.9-.5.9-1.2 0-1.7zM5.5 22.1 15 13.5l1.6 1.6z"/></svg>Get it on Google Play</a>
   </div>
