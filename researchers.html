@@ -1,0 +1,134 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>For researchers · Fairest Heart</title>
+<meta name="description" content="Days of background single-lead ECG from a Polar H10 on the participant&#x27;s own phone, in EDF+ with the moments they marked. Codes per participant, a format page, a sample file.">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48"><link rel="icon" type="image/png" sizes="256x256" href="icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="canonical" href="https://fairestheart.com/researchers.html">
+<meta name="theme-color" content="#0b0e14">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Fairest Heart">
+<meta property="og:url" content="https://fairestheart.com/researchers.html">
+<meta property="og:title" content="For researchers · Fairest Heart">
+<meta property="og:description" content="Days of background single-lead ECG from a Polar H10 on the participant&#x27;s own phone, in EDF+ with the moments they marked. Codes per participant, a format page, a sample file.">
+<meta property="og:image" content="https://fairestheart.com/og-1200x630.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fairest Heart: a live ECG on a phone. Your ECG, all night long.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="For researchers · Fairest Heart"><meta name="twitter:description" content="Days of background single-lead ECG from a Polar H10 on the participant&#x27;s own phone, in EDF+ with the moments they marked. Codes per participant, a format page, a sample file.">
+<meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<!-- ============ title bar ============ -->
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="icon.png" alt="">FAIREST HEART</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">☰</button>
+    <nav class="nav" id="nav" aria-label="Site">
+      <a href="index.html">Home</a>
+      <a href="plans.html">Plans</a>
+      <a href="founders.html">Founders</a>
+      <a href="clinics.html">Clinics</a>
+      <a href="sponsors.html">Sponsors</a>
+      <a href="help.html">Help</a>
+      <a href="viewer.html">Viewer</a>
+      <a href="changelog.html">Changelog</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="cta" href="https://play.google.com/store/apps/details?id=com.fairestmedia.fairestheart" rel="noopener"><svg class="store" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 2.2a1.4 1.4 0 0 0-.6 1.1v17.4c0 .5.2.9.6 1.1l9.9-9.8zM15 10.5 5.5 1.9l11.1 6.4zM16.6 8.3l-2.9 2.9 2.9 2.9 3.6-2.1c.9-.5.9-1.2 0-1.7zM5.5 22.1 15 13.5l1.6 1.6z"/></svg>Get it on Google Play</a>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap sec" style="padding-top:48px">
+    <div class="sec-head"><span class="eyebrow">Researchers</span><h2>Days of background ECG with the moments the participant marked.</h2>
+      <p>A single-lead ECG from a Polar H10 on the participant's own phone, written as EDF+. All day, all night, for as many days as the study runs. Codes per participant, a format page, a sample file.</p></div>
+  </div>
+
+  <div class="wrap sec">
+    <div class="sec-head"><span class="eyebrow">Who it is for</span><h2>Labs that already use the H10 and want days, not sessions.</h2></div>
+    <p>The H10 is in hundreds of papers. Most of that work is a session in a lab with a phone tethered to a laptop. Fairest Heart records on the participant's phone, without a laptop, for as long as the strap is worn, and keeps the moments the participant tapped as annotations in the same file.</p>
+  </div>
+
+  <div class="wrap sec">
+    <div class="sec-head"><span class="eyebrow">What a participant does</span><h2>Wears the strap. Taps the bar when something happens.</h2></div>
+    <div class="steps" style="grid-template-columns:repeat(2,1fr)">
+      <div class="step"><h3>Wears the strap</h3><p>The app records all day and all night, by itself, as soon as the strap connects. Lab-owned phones or the participant's own.</p></div>
+      <div class="step"><h3>Taps the bar</h3><p>When something happens, one tap marks the moment. The participant can add what they felt or were doing, or a note, later.</p></div>
+      <div class="step"><h3>The file is on the phone</h3><p>Every recording is copied to Download/FairestHeart as EDF+ and CSV, and survives removing the app.</p></div>
+      <div class="step"><h3>The lab gets it</h3><p>The participant shares it from the app to the lab's address, or the lab copies the folder over USB from a lab phone. No server either way: nothing leaves the phone unless it is shared.</p></div>
+    </div>
+  </div>
+
+  <div class="wrap sec">
+    <div class="sec-head"><span class="eyebrow">The file</span><h2>Plain EDF+. Any reader that knows the format opens it.</h2>
+      <p>The sample below is a synthetic heart with three marks, written by the same code the app uses. Open it in <a href="viewer.html">the viewer on this site</a>, which reads the file in your browser and uploads nothing, or in EDFbrowser or any EDF+ reader.</p></div>
+    <div class="tbl"><table>
+      <tr><th>ECG</th><td>130 samples per second, in µV. One bipolar chest lead, raw from the strap: no filter is applied to what is stored.</td></tr>
+      <tr><th>Accelerometer</th><td>ACC X, ACC Y, ACC Z, 25 samples per second, in mG, placed on the ECG time axis.</td></tr>
+      <tr><th>Later files</th><td>Also carry the R-R intervals and a signal-quality channel (one value per second, “SigQual”, in %).</td></tr>
+      <tr><th>Records</th><td>One second each.</td></tr>
+      <tr><th>One recording</th><td>EDF+C: continuous records.</td></tr>
+      <tr><th>A group of recordings</th><td>EDF+D, for a group with gaps between files. Each gap is annotated with its length and why.</td></tr>
+      <tr><th>Marks</th><td>An annotation <code>Mark &lt;label&gt;</code> at the moment the participant tapped, for example <code>Mark fluttering / racing</code> or <code>Mark short of breath</code>. A free note reads <code>Mark</code> followed by the participant's own words.</td></tr>
+      <tr><th>Dropouts</th><td>A span where the link to the strap was lost is padded with zeros so the time axis holds, and annotated, for example <code>Dropout ECG 4.0 s (padded)</code>.</td></tr>
+      <tr><th>Time axis</th><td>The file's own sample axis: onset = sample number ÷ 130. The strap's clock runs about 0.19 % fast against wall time, so over a night the file is slightly longer in samples than the clock says. The CSV beside the file records the measured rate. Use it to place a file second on the wall clock.</td></tr>
+      <tr><th>Identification</th><td>The header's first field reads <code>code sex birthdate name</code>. Where a Study ID is set under Your details, it takes the code position. The sample reads <code>DEMO_01 X X X</code>: study ID only, the rest unknown.</td></tr>
+      <tr><th>Lead notes</th><td>A note at time zero says what wrote the file and that it is a single bipolar chest lead and not a medical device.</td></tr>
+    </table></div>
+    <dl class="kv" style="margin-top:18px">
+      <dt>Sample with marks</dt><dd><a href="sample-fairest-heart-marked.edf">sample-fairest-heart-marked.edf</a>, 23 min 45 s, three marks at 4:10, 11:30 and 19:02.</dd>
+      <dt>The same, no marks</dt><dd><a href="sample-fairest-heart.edf">sample-fairest-heart.edf</a>, plain EDF.</dd>
+      <dt>Open in the browser</dt><dd><a href="viewer.html">The viewer</a>.</dd>
+    </dl>
+  </div>
+
+  <div class="wrap sec">
+    <div class="sec-head"><span class="eyebrow">Codes</span><h2>One code per participant, for as long as the study runs.</h2></div>
+    <dl class="kv">
+      <dt>The code</dt><dd>Each participant gets a code that runs for the study's length at the Pro level, so the app keeps every recording and prunes nothing.</dd>
+      <dt>Study ID</dt><dd>The lab enters the Study ID on each phone under Your details. It goes into every file the phone writes.</dd>
+      <dt>Phones</dt><dd>Lab-owned, set up once, or the participant's own.</dd>
+    </dl>
+  </div>
+
+  <div class="wrap sec">
+    <div class="sec-head"><span class="eyebrow">What it costs</span><h2>$25 per participant, or $500 to $2,000 per study.</h2></div>
+    <dl class="kv">
+      <dt>Per participant</dt><dd>$25.</dd>
+      <dt>Per study</dt><dd>$500 to $2,000, depending on the length and the number of participants.</dd>
+      <dt>Invoice</dt><dd>Invoiced to the grant.</dd>
+      <dt>First three studies</dt><dd>Free, in exchange for a citation.</dd>
+    </dl>
+  </div>
+
+  <div class="wrap sec">
+    <div class="sec-head"><span class="eyebrow">Get in touch</span><h2>Write to us.</h2></div>
+    <p>Write to <strong>help@fairestheart.com</strong> with “Study” in the subject. Say how many participants, how many days, and what you open the files with. We answer within a day.</p>
+    <p class="fine">See also <a href="clinics.html">Clinics</a>, <a href="help.html">Help</a> and the <a href="privacy.html">privacy policy</a>.</p>
+  </div>
+
+  <div class="wrap sec">
+    <div class="note">
+      <strong>Fairest Heart is not a medical device and not a replacement for a recorder from your clinic.</strong> It records, displays and exports the data your sensor provides. It does not analyse your heart rhythm and makes no statement about it. If you are worried about your heart, see a clinician.
+    </div>
+  </div>
+</main>
+<!-- ============ footer ============ -->
+<footer>
+  <div class="wrap">
+    <div><div class="brand" style="margin-bottom:12px"><img src="icon.png" alt="">FAIREST HEART</div>
+      <p>A record of your own heart, in your own hands. Stays on your phone.</p>
+      <p style="margin-top:10px" class="small">Not a medical device, not a replacement for a recorder from your clinic. If you are worried about your heart, see a clinician.</p></div>
+    <div><h4>App</h4><ul><li><a href="index.html">Home</a></li><li><a href="get-started.html">Get started</a></li><li><a href="plans.html">Plans</a></li><li><a href="help.html">Help</a></li><li><a href="researchers.html">Researchers</a></li><li><a href="changelog.html">Changelog</a></li></ul></div>
+    <div><h4>Legal</h4><ul><li><a href="privacy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="help.html">Third-party licences</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="contact.html">help@fairestheart.com</a></li><li>Fairest Media LLC</li><li>United States</li></ul></div>
+  </div>
+  <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
+</footer>
+
+<script src="site.js?v=0.105.3"></script>
+</body></html>
