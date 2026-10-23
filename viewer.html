@@ -138,6 +138,7 @@ details.vcard .inner{display:grid;gap:14px;padding:4px 0 18px}
           <button class="vbtn" type="button" data-gain="20" aria-pressed="false">20 mm/mV</button></div>
         <div class="grp">
           <button class="vbtn" type="button" id="paperBtn" aria-pressed="true">Paper look</button>
+          <button class="vbtn" type="button" id="filterBtn" aria-pressed="true" title="0.5 Hz high-pass, the usual monitor-mode baseline removal. Display only; the file stays as recorded.">Baseline filter</button>
           <button class="vbtn" type="button" id="calBtn" aria-pressed="false">Calipers</button>
           <button class="vbtn" type="button" id="printBtn">Print</button></div>
       </div>
@@ -153,7 +154,7 @@ details.vcard .inner{display:grid;gap:14px;padding:4px 0 18px}
         </div>
         <input id="slider" type="range" min="0" max="0" step="0.05" value="0" aria-label="Position in the recording" style="margin-top:8px">
       </div>
-      <p class="small dim noprint">Three rows, each continuing the one above. The square pulse at the left of every row is 1 mV. The clock at the top left of a row is where it starts; the heart rate next to it comes from the file's RR channel when it has one. Drag the strip to move along it. Arrow keys step a tenth of a row; hold Shift or use Page Up and Page Down for all three rows. Printed at 100 % the paper is true to scale (25 mm per second, 10 s per row); on screen it is only as large as your display makes it. Amber dashes are marks the wearer made.</p>
+      <p class="small dim noprint">Three rows, each continuing the one above. The square pulse at the left of every row is 1 mV. The clock at the top left of a row is where it starts; the heart rate next to it comes from the file's RR channel when it has one. Baseline filter is the 0.5 Hz high-pass every monitor applies; it only changes the drawing, the file stays as recorded, and you can switch it off. With an RR channel the bar under the strip also shows the heart rate per minute over the whole recording. Drag the strip to move along it. Arrow keys step a tenth of a row; hold Shift or use Page Up and Page Down for all three rows. Printed at 100 % the paper is true to scale (25 mm per second, 10 s per row); on screen it is only as large as your display makes it. Amber dashes are marks the wearer made.</p>
     </section>
 
     <section class="vcard noprint" aria-label="Marks and notes">
