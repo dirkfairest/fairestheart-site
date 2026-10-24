@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.106.2">
+<link rel="stylesheet" href="styles.css?v=0.106.3">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -68,6 +68,16 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.106.3</span><span class="d">24 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>If Android closes the app while a recording is on hold, the recording now comes back on hold when the app restarts, instead of recording again by itself.</li>
+<li>Disconnecting while a recording is on hold and still empty now closes it, so Record on connect starts a new recording the next time you connect. A moment you marked while it was on hold is kept.</li>
+<li>Fixed a rare case where stopping a recording right after it started could leave its summary empty (length 0).</li>
+<li>If your phone is too full to finish a recording's backup copy when you stop, the app now tells you. The recording itself is saved.</li>
+<li>An empty recording left behind by the app being closed while on hold is now removed instead of showing up as a 0-second recording, and a recording left unfinished by an older version is finished when the app starts and copied to Download.</li>
+<li>The size shown under "For AI chats" now includes the PDF, so it matches the size check. After you press Cancel on a share, no "Analysing" message appears any more.</li>
+<li>Insights hour marks follow a change of time zone straight away.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.106.2</span><span class="d">24 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>If the phone's storage fills up during a recording, the recording file is no longer left damaged: it carries on once space is free again, and when the recording is saved it is completed from the backup copy the app keeps beside it.</li>
@@ -419,5 +429,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.106.2"></script>
+<script src="site.js?v=0.106.3"></script>
 </body></html>
