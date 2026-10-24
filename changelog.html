@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.106.1">
+<link rel="stylesheet" href="styles.css?v=0.106.2">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -68,6 +68,18 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.106.2</span><span class="d">24 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>If the phone's storage fills up during a recording, the recording file is no longer left damaged: it carries on once space is free again, and when the recording is saved it is completed from the backup copy the app keeps beside it.</li>
+<li>If Android closes the app to free memory during a recording and "Start recording again after a restart or update" is on, the app now starts recording again by itself.</li>
+<li>The app uses less battery while the strap is connected but nothing is being recorded or a recording is on hold, and keeps the phone awake while the strap is out of reach so it can reconnect.</li>
+<li>While the strap is out of reach, the notification now says the app is reconnecting to it, instead of saying the strap is connected.</li>
+<li>The ECG viewer's clock now matches the rest of the app while a recording is running: by the end of a long recording it used to run about 40 seconds ahead.</li>
+<li>With Standard scale on, opening the ECG at a moment or a mark now shows that moment on screen instead of just past the edge.</li>
+<li>If the app cannot work out a recording's figures, the ECG viewer and the Insights page now say so instead of spinning for ever.</li>
+<li>Insights opens faster when you come back to a recording, and sharing a whole day as EDF+ uses far less memory.</li>
+<li>Recording figures (not in the Play build): a shape's coupling follows one rule on every page and in the PDF, the hour chart and the worst hour agree on a short last hour, and a new Clinical page shows the summary card beside the tiles.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.106.1</span><span class="d">24 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>New "For AI chats" share choice: it sends a recording or a day as plain files a chat app can read: the ECG and the motion as spreadsheets (one per hour, the same samples as the recording file), every beat, your marks, the PDF and a note that explains every column. The line under the choice says how big the files are. Your name and date of birth are left out unless you switch them on.</li>
@@ -403,5 +415,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.106.1"></script>
+<script src="site.js?v=0.106.2"></script>
 </body></html>
