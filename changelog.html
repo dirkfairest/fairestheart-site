@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.106.13">
+<link rel="stylesheet" href="styles.css?v=0.106.14">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -68,6 +68,15 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.106.14</span><span class="d">26 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Insights: the Heart rate card now shows its key on the card, under the three bars: a hatched "No signal", the "Usual range" band (in place of the separate line) and an orange "What you felt" tick, each only when the chart draws it.</li>
+<li>Marked events is tidier: one short row per mark with the time, what you felt and a small note of what you were doing. Tap a row to open the ECG at that moment; the heart rate and the ECG button are gone from the rows.</li>
+<li>A mark's Share now sends the whole recording the mark is in, so whoever receives it sees it in context, with the mark's time named in the PDF (its strip comes first) and in the AI chat's notes. When only the 10 minutes around a mark are still kept, those are shared, and the sheet says so.</li>
+<li>Sharing with an AI chat now follows the app you pick. An app that opens the recording file gets it whole (the EDF+ for each part, the beats, your marks and a README); an app that cannot gets plain text (beats, signal quality, marks, notes and the ECG for two minutes around each mark). Nothing is cut for size any more, and the list of hours is gone.</li>
+<li>Every share of the recording file now shows its size, for example "19 MB in 3 files", and a switch "ECG only (no motion)" that leaves the movement trace out. If an app is known to take less than the share, the sheet says so under that app; some chat and mail apps take 16–25 MB.</li>
+<li>A clinician, an AI chat and anyone else now open on every plan. On Free the share goes without the PDF report, which is part of Plus; a "PDF report" item shows it and opens the plans.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.106.13</span><span class="d">26 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>Sharing with an AI chat now sends exactly what you selected, a day, a recording or a marked moment, with no list of hours to choose. If it is too big for a chat app, the ECG trace is kept for the hours with your marks: one line says so, and "Change hours" lets you pick. The beats, rhythm and notes always cover everything you selected.</li>
@@ -514,5 +523,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.106.13"></script>
+<script src="site.js?v=0.106.14"></script>
 </body></html>
