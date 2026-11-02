@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.107.8">
+<link rel="stylesheet" href="styles.css?v=0.107.14">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -68,6 +68,36 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.107.14</span><span class="d">1 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>The mark sheet offers Chest pain and Chest pressure as two separate ticks instead of one. Marks made earlier with the combined tick now read "Chest pain".</li>
+<li>Load card: the "i" on each of its three tiles now explains that tile's own figure (7 days, 28 days, ratio); before, all three opened the card's text.</li>
+</ul></div></div>
+    <div class="rel"><div><span class="v">0.107.13</span><span class="d">29 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Behind-the-scenes changes to the separate analysis build only. Nothing changes in this app.</li>
+</ul></div></div>
+    <div class="rel"><div><span class="v">0.107.12</span><span class="d">29 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>The Plan page links to the Terms of use and the Privacy policy, next to Restore purchases.</li>
+<li>A share to a clinician or anyone else tells the receiver they can open the recording file in their browser at fairestheart.com/viewer.html, with nothing uploaded; a zipped share carries a short README saying what each file is.</li>
+</ul></div></div>
+    <div class="rel"><div><span class="v">0.107.11</span><span class="d">28 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>After the app restarts, a recording that was already copied to the Download folder is no longer copied a second time under a "(1)" name.</li>
+</ul></div></div>
+    <div class="rel"><div><span class="v">0.107.10</span><span class="d">28 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Insights now reads the recording up to the moment you open it: the running recording's beats count in the HRV card and the scatter plot in both looks, a recording that just closed is measured at once, and a card says "Last N min not in yet" while that runs instead of leaving them out.</li>
+<li>Twelve info sheets corrected after a check of every card's text: the scatter plot (wellness) says it counts every readable pair; Load says it averages the recorded days of the last 7; the Average and HRV tiles show how many minutes they rest on; the burden sheet names the 2017 guideline and what its 15 % means; smaller fixes on At rest, Breathing, Resting, Aerobic threshold, Rhythm, Events and Battery.</li>
+</ul></div></div>
+    <div class="rel"><div><span class="v">0.107.9</span><span class="d">28 October 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Share: a share that includes the recording still running closes it first, the way the six-hour split does, so the files hold everything up to that moment; recording goes on. If it cannot close in a few seconds, the sheet says how many minutes are left out and offers Stop and share or Share anyway, and the PDF and the chat notes say the same.</li>
+<li>Share: the day is named as on Insights ("Today", "Yesterday"); a day recorded since midnight can be shared while the recording runs. Every recording reads by its own start and end times. A Next button under the first step; the "All recordings" row is gone (the backup keeps that job).</li>
+<li>Share to a chat app: the limits follow the app you pick (how many files, how many MB, whether it opens a zip), and a set too big for one message goes in as few messages as fit. When ECG only would fit in one message, the sheet says so.</li>
+<li>Easy look: Share from a day, a recording or a mark goes straight to "Who is it for?"; one tap shares.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.107.8</span><span class="d">28 October 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>ECG screen: Pause, Stop and Record sit inside the recording card with the tiles' inset, clear of its edge.</li>
@@ -577,5 +607,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.107.8"></script>
+<script src="site.js?v=0.107.14"></script>
 </body></html>
