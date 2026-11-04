@@ -138,6 +138,8 @@ canvas.ecg{display:block;width:100%;height:190px}
 .thanks-line strong{color:var(--fg)}
 .goal-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
 .goal-card .story-facts{grid-template-columns:1fr 1fr}
+.facts-grid{grid-template-columns:1fr 1fr}
+@media (max-width:560px){.ask .story-facts,.goal-card .story-facts,.facts-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.goal-card .story-facts{grid-template-columns:1fr}}
 .cards{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
 @media(max-width:860px){.cards{grid-template-columns:1fr 1fr}}
