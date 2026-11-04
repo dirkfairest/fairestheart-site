@@ -128,6 +128,11 @@ canvas.ecg{display:block;width:100%;height:190px}
 .sec-head p{color:var(--dim)}
 
 /* feature cards */
+.ask-slim{display:flex;align-items:center;gap:22px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 24px}
+.ask-slim .t{display:grid;gap:6px;flex:1;min-width:0}
+.ask-slim p{color:var(--dim)}
+.ask-slim .cta{flex:none}
+@media(max-width:700px){.ask-slim{flex-direction:column;align-items:flex-start}}
 .ask{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px;display:grid;grid-template-columns:1.2fr 1fr;gap:30px}
 @media(max-width:760px){.ask{grid-template-columns:1fr;padding:22px}}
 .ask h2{margin:6px 0 10px;font-size:30px;line-height:1.15}
