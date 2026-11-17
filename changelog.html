@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.111.6">
+<link rel="stylesheet" href="styles.css?v=0.111.8">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -69,6 +69,20 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.111.8</span><span class="d">17 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Heart rate card: slide a finger along the chart to read the exact time and heart rate under it, at once, no hold needed. The small label goes away by itself a few seconds after you lift your finger; tap it before then to open the ECG at that minute. A plain tap still opens the ECG where you tap.</li>
+<li>Heart rate card: the chart is taller and easier to read. Sliding on it no longer switches to the other tab. Zoomed in, one finger reads and two fingers move the chart.</li>
+<li>Overnight trends: tap a night or slide along the lines to read that night; the card goes back to the newest night by itself after a few seconds.</li>
+<li>Recording figures (not in the Play build): when the app has found a repeating early beat whose shape has no class yet, the burden shows as a range that reaches up to what it would be with those beats, and a line under "Per hour of the clock" says how many beats are waiting and where to give the shape a class. Until then they are in no count, as before.</li>
+</ul></div></div>
+    <div class="rel"><div><span class="v">0.111.7</span><span class="d">17 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Recording figures (not in the Play build): the burden tile and the "Per hour of the clock" bars on a day, session or range now include the recording still running, as measured so far, so they follow the clock instead of waiting up to six hours for the file to close. The tile says so, and the figures can shift a little when the recording closes and is analysed in full. Wide-complex beats and beat shapes still wait for the close.</li>
+<li>Heart rate card: hold a finger on the chart and slide to read the exact time and heart rate under it. Tap the small label to open the ECG at that minute.</li>
+<li>Heart rate card: pinch with two fingers to zoom in on the time axis (down to 30 minutes), slide to move, "Zoom out" to see everything again. A tap on the zoomed chart opens the ECG at a much more exact moment.</li>
+<li>Overnight trends: tap a night, or hold and slide, to read that night's resting heart rate, HRV and breathing. Tap the same night again to go back to the newest.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.111.6</span><span class="d">10 November 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>Share: the file choice under the card is a proper row, "Choose the files", with a count of what is ticked; its page says what to do, and a Plus file without the plan is shown dimmed instead of ticked.</li>
@@ -698,5 +712,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.111.6"></script>
+<script src="site.js?v=0.111.8"></script>
 </body></html>
