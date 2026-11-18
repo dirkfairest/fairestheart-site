@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.111.9">
+<link rel="stylesheet" href="styles.css?v=0.111.10">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -69,6 +69,17 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.111.10</span><span class="d">18 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>The ECG page redraws only the live parts (trace, heart rate, movement) when the strap sends data, not the whole page. Less work for the phone while recording.</li>
+<li>Saving labels and marks: a save from an older copy of a recording's event list no longer wipes a stamp another part of the app wrote in the meantime (who reviewed, strap battery, sample count).</li>
+<li>Share: every share that builds an EDF+ file or a zip checks for free room first and tells you when there is too little, as the AI chat share already did.</li>
+<li>Share: an EDF+ export reads the recording in the background, so the screen stays responsive on a long recording.</li>
+<li>Day PDF: the marks table and the recordings table never leave their header row alone at the foot of a page.</li>
+<li>Starting a recording when an earlier file has the same name: the new part joins its wearing under the name it was really given.</li>
+<li>Recording figures (not in the Play build): early beats that come a little early, are followed by a pause and match a known early-beat shape are no longer counted as normal (analysis 3.9.0). Every recording is analysed again once.</li>
+<li>Under the hood: the app's largest source file is split into thirteen smaller ones with no change in behaviour, an automatic check runs the tests on every upload of the code, and one script now does the steps of a release.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.111.9</span><span class="d">17 November 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>Share › "An AI chat": with "Include my name and birth date" switched off, no file in the share carries your name or birth date, also when you chose the files yourself under "Choose the files". Until now the PDF and the EDF+ file still carried them in that case.</li>
@@ -728,5 +739,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.111.9"></script>
+<script src="site.js?v=0.111.10"></script>
 </body></html>
