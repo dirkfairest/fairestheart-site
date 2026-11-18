@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.111.8">
+<link rel="stylesheet" href="styles.css?v=0.111.9">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -69,6 +69,22 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.111.9</span><span class="d">17 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Share › "An AI chat": with "Include my name and birth date" switched off, no file in the share carries your name or birth date, also when you chose the files yourself under "Choose the files". Until now the PDF and the EDF+ file still carried them in that case.</li>
+<li>Recording: when the strap stays connected but stops sending ECG, the app asks the strap to start again once and, if nothing comes, tells you with a notice. The recording itself is never stopped by this.</li>
+<li>Recording: safer file handling in rare cases. A new recording never opens over the name of an earlier one, the recording file is written to storage before its working copy is removed, and the list of gaps is saved in one step.</li>
+<li>Recordings made in one wearing stay together after the app restarts. In a rare order of events at start-up the earlier part could drop out of its group, and with it out of the day's EDF+ file.</li>
+<li>Day PDF (one document for a whole day): long tables of hours and of marks now continue on the next page instead of being cut off, the heart rate chart's scale grows to fit a workout, and times such as "1 h 0 min" read the same everywhere on a page.</li>
+<li>Share: large zip files are written piece by piece, so a big share no longer needs the whole of it in memory, and the check for free room counts the zip and its copies. Copies made for a share are removed after an hour, and at once when you delete the recording.</li>
+<li>Opening a file from another app: a file over 64 MB is refused, and the copy the app makes is removed after use.</li>
+<li>Plans: a "Restore purchases" that fails half way no longer puts a paid plan back to Free. Keeping recordings by plan is skipped when the phone's clock has jumped, so a wrong date cannot remove anything early.</li>
+<li>The ECG page does less work in the background while you look at another page, and the Recordings page lists its folder without holding up the screen.</li>
+<li>Privacy policy: the name and e-mail address you can save for sharing are now listed. They stay on your phone.</li>
+<li>Recording figures (not in the Play build): the day PDF counts every figure inside the day itself. A recording that runs past midnight no longer adds its whole night to the next day's shapes, rate bands and mark counts; the coupling figures are taken over all the day's beats together; the highest hour follows the same 15-minute rule as on screen; and SDANN and ASDNN are filled in for a day, session or range.</li>
+<li>Recording figures (not in the Play build): an event of a rare shape that you labelled yourself is no longer listed as left out; the burden trend draws no dot for a stretch too short to give a figure; and shape percentages no longer dip while a recording is running.</li>
+<li>Recording figures (not in the Play build): the analysis no longer throws away a small early beat as a false detection when a full pause follows it, it has its own T wave and the signal around it is steady. This mostly happened by day at a faster heart rate. Recordings are analysed again once after the update, which can take a while on the first open; early-beat counts can rise, mostly in daytime recordings, and labels you gave are kept.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.111.8</span><span class="d">17 November 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>Heart rate card: slide a finger along the chart to read the exact time and heart rate under it, at once, no hold needed. The small label goes away by itself a few seconds after you lift your finger; tap it before then to open the ECG at that minute. A plain tap still opens the ECG where you tap.</li>
@@ -712,5 +728,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.111.8"></script>
+<script src="site.js?v=0.111.9"></script>
 </body></html>
