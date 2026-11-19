@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.111.13">
+<link rel="stylesheet" href="styles.css?v=0.111.14">
 </head><body>
 <a class="skip" href="#main">Skip to main content</a>
 <!-- ============ title bar ============ -->
@@ -167,10 +167,10 @@ details.vcard .inner{display:grid;gap:14px;padding:4px 0 18px}
           <button class="vbtn" type="button" id="printBtn">Print</button></div>
       </div>
       <div class="winfo noprint" id="winInfo"></div>
-      <div class="cwrap"><canvas id="strip" tabindex="0" role="img" aria-label="The recorded trace on ECG paper. Drag, or use the arrow keys, to move along the recording."></canvas></div>
+      <div class="cwrap"><canvas id="strip" tabindex="0" role="img" aria-label="The recorded trace on ECG paper. Drag, or use the arrow keys, to move along the recording. Press Enter or C to place a caliper line at the middle."></canvas></div>
       <div id="calOut" class="noprint" aria-live="polite"></div>
       <div class="noprint">
-        <canvas id="overview" aria-label="The whole recording. Click to jump."></canvas>
+        <canvas id="overview" aria-hidden="true"></canvas>
         <div class="ctl" style="margin-top:8px">
           <div class="grp">
             <button class="vbtn" type="button" id="prevBtn">&larr; Previous</button>
@@ -210,7 +210,7 @@ details.vcard .inner{display:grid;gap:14px;padding:4px 0 18px}
     <p class="pf">Not a medical device. This page shows the file as recorded; it makes no statement about the heart.</p>
   </div>
 </div></div>
-<script src="viewer.js?v=0.111.13"></script>
+<script src="viewer.js?v=0.111.14"></script>
 </main>
 <!-- ============ footer ============ -->
 <footer>
@@ -225,5 +225,5 @@ details.vcard .inner{display:grid;gap:14px;padding:4px 0 18px}
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.111.13"></script>
+<script src="site.js?v=0.111.14"></script>
 </body></html>

@@ -629,11 +629,11 @@
     function calReadout() {
       var el = $('calOut');
       if (!S.calOn) { el.textContent = ''; return; }
-      if (S.cal.length === 0) el.textContent = 'Calipers on. Click the strip to place the first line.';
-      else if (S.cal.length === 1) el.textContent = 'Click to place the second line. Esc clears.';
+      if (S.cal.length === 0) el.textContent = 'Calipers on. Click the strip, or press Enter on it, to place the first line.';
+      else if (S.cal.length === 1) el.textContent = 'Click, or press Enter on the strip, to place the second line. Esc clears.';
       else {
         var ms = Math.abs(S.cal[1] - S.cal[0]) * 1000;
-        el.textContent = Math.round(ms) + ' ms  ·  ' + (ms > 0 ? (60000 / ms).toFixed(1) : '–') + ' bpm if repeated. Click again to start over.';
+        el.textContent = Math.round(ms) + ' ms  ·  ' + (ms > 0 ? (60000 / ms).toFixed(1) : '–') + ' bpm if repeated. Click, or press Enter, to start over.';
       }
     }
     function placeCaliper(clientX, clientY) {
@@ -644,6 +644,13 @@
       if (S.cal.length >= 2) S.cal = [];
       S.cal.push(t);
       redraw();
+    }
+    // From the keyboard: Enter or C on the focused trace drops a line at the
+    // middle of what is on screen (turning calipers on first if they are off).
+    function placeCaliperAtCentre() {
+      if (!S.calOn) $('calBtn').click();
+      var rect = strip.getBoundingClientRect();
+      placeCaliper(rect.left + rect.width / 2, rect.top + rect.height / 2);
     }
     function clearCal() { S.cal = []; redraw(); }
 
@@ -863,6 +870,7 @@
       else if (e.key === 'PageDown') setStart(S.start + big);
       else if (e.key === 'Home') setStart(0);
       else if (e.key === 'End') setStart(S.total);
+      else if ((e.key === 'Enter' || e.key === 'c' || e.key === 'C') && !e.ctrlKey && !e.metaKey && !e.altKey) placeCaliperAtCentre();
       else handled = false;
       if (handled) e.preventDefault();
     });

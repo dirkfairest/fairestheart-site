@@ -7,12 +7,31 @@
   function closeAll(except){grps.forEach(function(g){if(g!==except){g.classList.remove('open');g.querySelector('.grp-btn').setAttribute('aria-expanded','false')}})}
   grps.forEach(function(g){var b=g.querySelector('.grp-btn');b.addEventListener('click',function(e){e.stopPropagation();var o=g.classList.toggle('open');closeAll(g);b.setAttribute('aria-expanded',o?'true':'false')})});
   document.addEventListener('click',function(e){if(!nav.contains(e.target))closeAll()});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeAll();nav.classList.remove('open');btn.setAttribute('aria-expanded','false')}});
+  // Narrow screens show each group's name as a plain caption over its links:
+  // not a control there, so out of the tab order and hidden from speech output.
+  var narrow=window.matchMedia&&window.matchMedia('(max-width:1040px)');
+  function caps(){var n=!!(narrow&&narrow.matches);grps.forEach(function(g){var b=g.querySelector('.grp-btn');
+    if(n){b.setAttribute('tabindex','-1');b.setAttribute('aria-hidden','true')}else{b.removeAttribute('tabindex');b.removeAttribute('aria-hidden')}})}
+  caps();
+  if(narrow){if(narrow.addEventListener)narrow.addEventListener('change',caps);else if(narrow.addListener)narrow.addListener(caps)}
+  // Wide screens: the list also shows while focus is inside the group, so
+  // Escape marks it shut (.shut) and puts focus back on the group's button.
+  grps.forEach(function(g){
+    function unshut(){g.classList.remove('shut')}
+    g.addEventListener('mouseenter',unshut);
+    g.addEventListener('focusout',function(e){if(!e.relatedTarget||!g.contains(e.relatedTarget))unshut()});
+    g.querySelector('.grp-btn').addEventListener('click',unshut);
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){
+    var a=document.activeElement, wide=!(narrow&&narrow.matches);
+    closeAll();nav.classList.remove('open');btn.setAttribute('aria-expanded','false');
+    if(wide&&a)grps.forEach(function(g){if(g.contains(a)){g.classList.add('shut');g.querySelector('.grp-btn').focus()}});
+  }});
 
   var cb=document.getElementById('copyBtn');
   if(cb)cb.addEventListener('click',function(){
     var t=document.getElementById('mail').textContent;
-    function done(){cb.textContent='Copied';setTimeout(function(){cb.textContent='Copy address'},1600)}
+    function done(){cb.textContent='Copied';var st=document.getElementById('copyStatus');if(st)st.textContent='Address copied';setTimeout(function(){cb.textContent='Copy address';if(st)st.textContent=''},1600)}
     function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('mail'));var s=getSelection();s.removeAllRanges();s.addRange(r)}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel)}else sel();
   });

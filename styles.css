@@ -54,6 +54,7 @@ p{margin:0}
 .menu{display:none;position:absolute;top:100%;left:0;padding-top:8px;z-index:30}
 .menu-in{display:flex;flex-direction:column;gap:2px;min-width:200px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:8px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
 .grp:hover>.menu,.grp:focus-within>.menu,.grp.open>.menu{display:block}
+.grp.shut>.menu{display:none}
 .menu a{display:block;padding:10px 14px;border-radius:10px}
 .cta{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:var(--amber-ink);font-weight:500;
   padding:12px 20px;border-radius:999px;border:0;font:inherit;cursor:pointer;white-space:nowrap}
@@ -269,8 +270,7 @@ details p{padding-bottom:16px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 /* the store button until the public release: looks like the button, does nothing */
-.cta.soon{cursor:default;opacity:.85}
-.cta.soon:hover{filter:none}
-.cta .when{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--line);color:var(--fg);margin-left:2px}
 .cta .store{width:18px;height:18px;flex:none}
 .hero-why{margin:0}.hero-why a{color:var(--teal);font-weight:500}
+
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
