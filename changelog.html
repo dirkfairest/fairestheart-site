@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.111.15">
+<link rel="stylesheet" href="styles.css?v=0.111.16">
 </head><body>
 <a class="skip" href="#main">Skip to main content</a>
 <!-- ============ title bar ============ -->
@@ -70,6 +70,10 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.111.16</span><span class="d">19 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Recording figures (not in the Play build): the small early beats the analysis finds since 0.111.11 now count everywhere a beat counts: in a recording's number of beats, in each hour's count, in the heart rate per minute and in the search for pauses (analysis 3.10.1). Until now they were only in the total and in the list of beats, so an hour's burden was divided by slightly too few beats and the gap around such a beat could read as one long interval. Every recording is analysed again once after the update; labels you gave are kept.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.111.15</span><span class="d">19 November 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>Recording figures (not in the Play build): the burden under "Per hour of the clock" is back. Since 0.111.11 it showed a dash on a day with a recording that runs past midnight, and the hour bars stayed empty, because the small early beats the analysis now finds were counted in a recording's total but missing from its saved list of beats, so the two never agreed. The saved list of every recording is written again by itself after the update; a day's figures return when its recordings are done.</li>
@@ -769,5 +773,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.111.15"></script>
+<script src="site.js?v=0.111.16"></script>
 </body></html>
