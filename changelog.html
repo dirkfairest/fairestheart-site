@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://fairestheart.com/og-1200x630.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=0.111.11">
+<link rel="stylesheet" href="styles.css?v=0.111.12">
 </head><body>
 <!-- ============ title bar ============ -->
 <header class="bar">
@@ -69,6 +69,13 @@
   <div class="wrap"><div class="doc">
     <div class="doc-head"><span class="eyebrow">Changelog</span><h1 style="font-size:clamp(30px,4.5vw,44px)">What changed, release by release.</h1>
       <p class="dim">The version is on the menu's bottom line in the app. Google Play updates in the background. Earlier numbers are the test builds the app went through before anyone else saw it.</p></div>
+    <div class="rel"><div><span class="v">0.111.12</span><span class="d">18 November 2026</span><span class="tag">Release</span></div>
+      <div><ul>
+<li>Recording figures (not in the Play build): after an update of the analysis the app now analyses the recordings of the last three days again by itself, not only the last 24 hours. Before, the burden for yesterday could stay a dash until you chose Re-analyse all recordings in the menu. Older recordings still wait for that menu item or for the first time you open them.</li>
+<li>The Play Store version no longer has the Enter a code page. A code already entered keeps working. Gifts there go through the store's own promo codes.</li>
+<li>A change in the strap's battery level or connection redraws only the header and the live pages, not the whole app.</li>
+<li>Under the hood: share code that could no longer be reached (picking single hours for an AI chat share) is removed.</li>
+</ul></div></div>
     <div class="rel"><div><span class="v">0.111.11</span><span class="d">18 November 2026</span><span class="tag">Release</span></div>
       <div><ul>
 <li>Recording figures (not in the Play build): the analysis now finds small early beats it used to miss altogether. Such a beat is so low that the app never saw it and only a pause of two heartbeats was left. Where a pause of that length holds a small sharp beat with its own T wave and the signal around it is steady, the beat is now listed (analysis 3.10.0). Most of these show as uncertain beats until their shape has a label, so the early-beat percentage moves little at first. Every recording is analysed again once after the update, which can take a while on the first open; labels you gave are kept.</li>
@@ -743,5 +750,5 @@
   <div class="legal-line">© 2026 Fairest Media LLC. Polar and Polar H10 are trademarks of Polar Electro Oy. Google Play is a trademark of Google LLC. Android is a trademark of Google LLC. As an Amazon Associate, Fairest Media LLC earns from qualifying purchases made through the Amazon links on this site.</div>
 </footer>
 
-<script src="site.js?v=0.111.11"></script>
+<script src="site.js?v=0.111.12"></script>
 </body></html>
