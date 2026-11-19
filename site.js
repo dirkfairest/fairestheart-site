@@ -20,9 +20,11 @@
   // live ECG strip: one synthetic PQRST beat at ~72 bpm, drawn the way the app draws it
   var c=document.getElementById('ecg'); if(!c)return; var g=c.getContext('2d');
   var W=c.width,H=c.height, secs=5, fs=130, N=secs*fs, buf=new Float32Array(N), t=0, phase=0, rr=0.83;
-  // The strip always moves: a live ECG is the point of the page (Dirk, 2026-10-12);
-  // the page's own scrolling still honours reduce-motion in styles.css.
-  var reduce=false;
+  // The strip moves for everyone who has not asked for less motion (Dirk,
+  // 2026-10-12), and anyone can stop it with the button (WCAG 2.2.2). With
+  // 'reduce motion' set it starts stopped: one still frame, no animation.
+  var mq=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)');
+  var paused=!!(mq&&mq.matches), reduce=false;
   function beat(x){ // x in seconds since R, returns µV
     var v=0;
     v+= 120*Math.exp(-Math.pow((x+0.20)/0.025,2));      // P
@@ -57,11 +59,22 @@
     if(!last)last=now; var dt=Math.min((now-last)/1000,0.25); last=now;
     carry+=dt*fs; var n=Math.floor(carry); carry-=n;
     for(var k=0;k<n;k++){ buf[head]=beat(phase); head=(head+1)%N; phase+=1/fs; if(phase>rr-0.3){phase=-(rr-0.3); rr=0.78+Math.random()*0.1;} }
-    if(n)draw(); if(!reduce)requestAnimationFrame(tick);
+    if(n)draw(); if(!paused)requestAnimationFrame(tick);
   }
-  draw(); if(!reduce)requestAnimationFrame(tick);
+  draw(); if(!paused)requestAnimationFrame(tick);
   // The recording clock counts like the app's: starts where the picture starts.
-  var clk=document.getElementById('rec-clock'); if(clk){ var t0=Date.now()-(2*60+24)*1000;
-    setInterval(function(){ var s=Math.floor((Date.now()-t0)/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
-      clk.textContent=h+':'+(m<10?'0':'')+m+':'+(x<10?'0':'')+x; },1000); }
+  // It stands still while the strip is stopped.
+  var clk=document.getElementById('rec-clock'), clkS=2*60+24, clkT=Date.now();
+  function clock(){ if(paused||!clk)return; var s=clkS+Math.floor((Date.now()-clkT)/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+    clk.textContent=h+':'+(m<10?'0':'')+m+':'+(x<10?'0':'')+x; }
+  if(clk)setInterval(clock,1000);
+  var tg=document.getElementById('ecgToggle');
+  function label(){tg.textContent=paused?'Play animation':'Stop animation'}
+  if(tg){ tg.hidden=false; label();
+    tg.addEventListener('click',function(){
+      paused=!paused; label();
+      if(paused){ if(clk){clkS+=Math.floor((Date.now()-clkT)/1000)} }
+      else { last=0; carry=0; clkT=Date.now(); requestAnimationFrame(tick); }
+    });
+  }
 })();
